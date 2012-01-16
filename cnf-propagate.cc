@@ -53,7 +53,16 @@ int main(int argc, char *argv[])
 
 	unsigned int nr_variables;
 	unsigned int nr_clauses;
+    start_begin:
 	if (fscanf(fp, "p cnf %u %u\n", &nr_variables, &nr_clauses) != 2) {
+        char c;
+        fscanf(fp, "%c", &c);
+        if (c == 'c') {
+            while(c != '\n') {
+                fscanf(fp, "%c", &c);
+            }
+            goto start_begin;
+        }
 		fprintf(stderr, "error: expected: p cnf <variables> <clauses>\n");
 		exit(EXIT_FAILURE);
 	}
