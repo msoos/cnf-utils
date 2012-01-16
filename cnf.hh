@@ -58,6 +58,41 @@ public:
 	void print(FILE *fp)
 	{
         std::vector<char> litsInside;
+        long unsigned nr_variables = 0;
+        long unsigned nr_clauses = 0;
+        for (clause_vector::iterator cit = clauses.begin(),
+            cend = clauses.end(); cit != cend; ++cit)
+        {
+            clause::ptr c(*cit);
+
+            litsInside.clear();
+            bool isSAT = false;
+            for (clause::literal_vector::iterator lit = c->literals.begin(),
+                lend = c->literals.end(); lit != lend; ++lit)
+            {
+                nr_variables = std::max<long unsigned >(nr_variables, abs(*lit));
+
+                unsigned at = std::abs(*lit)*2;
+                unsigned atother = at;
+                if (*lit > 0) {
+                    at += 1;
+                } else {
+                    atother += 1;
+                }
+
+                if (litsInside.size() < at)
+                    litsInside.resize(at+1, 0);
+
+                if (litsInside[atother]) {
+                    isSAT = true;
+                }
+                litsInside[at] = 1;
+            }
+            if (!isSAT)
+                nr_clauses++;
+        }
+        printf("p cnf %lu %lu\n", nr_variables, nr_clauses);
+
 		for (clause_vector::iterator cit = clauses.begin(),
 			cend = clauses.end(); cit != cend; ++cit)
 		{

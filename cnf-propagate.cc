@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	printf("p cnf %u %u\n", nr_variables, nr_clauses);
+
 	f.print(stdout);
 
 	fclose(fp);
