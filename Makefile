@@ -11,7 +11,8 @@ programs := \
 	cnf-sort-clauses \
 	cnf-pack \
 	cnf-propagate \
-	cnf-stat
+	cnf-stat \
+	cnf-complete
 
 all: $(programs)
 
