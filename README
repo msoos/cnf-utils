@@ -25,7 +25,7 @@ Here is a short summary of the tools and their usage:
 	p cnf 3 1
 	1 2 0
 
- - cnf-pack [FILE]
+ - cnf-renumber [FILE]
 
 	Read the CNF file specified by FILE (or standard input if omitted)
 	and rename the variables so that they start at 1 and go to N, where
