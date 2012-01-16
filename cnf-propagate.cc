@@ -102,15 +102,22 @@ int main(int argc, char *argv[])
 			if (!literal)
 				break;
 
-			clause->add(literal);
-			map[literal].insert(clause);
+            if (std::find(clause->literals.begin(), clause->literals.end(), -literal) != clause->literals.end()) {
+                clause->satisfied = true;
+            }
+
+			if (clause->add(literal))
+                map[literal].insert(clause);
 		}
 
-		f.add(clause);
-		if (clause->literals.size() == 1)
-			agenda.insert(clause->literals[0]);
+        if (!clause->satisfied) {
+            f.add(clause);
+            if (clause->literals.size() == 1)
+                agenda.insert(clause->literals[0]);
+        }
 	}
 
+    bool UNSAT = false;
 	while (agenda.size()) {
 		literal_set::iterator it = agenda.begin();
 		cnf::literal literal = *it;
@@ -123,6 +130,8 @@ int main(int argc, char *argv[])
 				cend = clauses.end(); cit != cend; ++cit)
 			{
 				cnf::clause::ptr clause(*cit);
+                if (clause->satisfied)
+                    continue;
 
 				/* Leave unit clauses in the formula */
 				if (clause->literals.size() == 1)
@@ -137,24 +146,30 @@ int main(int argc, char *argv[])
 		}
 
 		if ((lit = map.find(literal)) != map.end()) {
-			clause_set &clauses = lit->second;
+			clause_set clauses = lit->second;
 			for (clause_set::iterator cit = clauses.begin(),
 				cend = clauses.end(); cit != cend; ++cit)
 			{
 				cnf::clause::ptr clause(*cit);
 
 				/* Leave unit clauses alone (XXX: Can this ever happen?) */
-				if (clause->literals.size() == 1)
+				if (clause->literals.size() == 1) {
+                    if (clause->literals[0] != literal) {
+                        UNSAT = true;
+                    }
 					continue;
+                }
 
-				/* Remove the clause by making it a tautology */
-				clause->literals.push_back(-literal);
+				clause->satisfied = true;
 			}
 		}
 	}
-
-
-	f.print(stdout);
+	if (UNSAT) {
+        std::cout << "p cnf 1 1" << std::endl;
+        std::cout << "0" << std::endl;
+    } else {
+        f.print(stdout);
+    }
 
 	fclose(fp);
 	return 0;

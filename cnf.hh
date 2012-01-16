@@ -31,14 +31,20 @@ public:
 		typedef std::vector<literal> literal_vector;
 
 		literal_vector literals;
+        bool satisfied;
 
-		clause()
+		clause() :
+            satisfied(false)
 		{
 		}
 
-		void add(literal x)
+		bool add(literal x)
 		{
-			literals.push_back(x);
+            if (std::find(literals.begin(), literals.end(), x) == literals.end()) {
+                literals.push_back(x);
+                return true;
+            } else
+                return false;
 		}
 	};
 
@@ -60,10 +66,18 @@ public:
         std::vector<char> litsInside;
         long unsigned nr_variables = 0;
         long unsigned nr_clauses = 0;
+        std::vector<char> print_clause;
+        size_t at_cl = 0;
         for (clause_vector::iterator cit = clauses.begin(),
-            cend = clauses.end(); cit != cend; ++cit)
+            cend = clauses.end(); cit != cend
+            ; ++cit, ++at_cl)
         {
+            print_clause.resize(at_cl+1, 1);
             clause::ptr c(*cit);
+            if (c->satisfied) {
+                print_clause[at_cl]= 0;
+                continue;
+            }
 
             litsInside.clear();
             bool isSAT = false;
@@ -85,6 +99,7 @@ public:
 
                 if (litsInside[atother]) {
                     isSAT = true;
+                    print_clause[at_cl] = 0;
                 }
                 litsInside[at] = 1;
             }
@@ -93,35 +108,14 @@ public:
         }
         printf("p cnf %lu %lu\n", nr_variables, nr_clauses);
 
+        at_cl = 0;
 		for (clause_vector::iterator cit = clauses.begin(),
-			cend = clauses.end(); cit != cend; ++cit)
+			cend = clauses.end(); cit != cend
+			; ++cit, ++at_cl)
 		{
 			clause::ptr c(*cit);
 
-
-            litsInside.clear();
-            bool isSAT = false;
-            for (clause::literal_vector::iterator lit = c->literals.begin(),
-                lend = c->literals.end(); lit != lend; ++lit)
-            {
-                unsigned at = std::abs(*lit)*2;
-                unsigned atother = at;
-                if (*lit > 0) {
-                    at += 1;
-                } else {
-                    atother += 1;
-                }
-
-                if (litsInside.size() < at)
-                    litsInside.resize(at+1, 0);
-
-                if (litsInside[atother]) {
-                    isSAT = true;
-                }
-                litsInside[at] = 1;
-            }
-
-            if (!isSAT) {
+            if (print_clause[at_cl]) {
                 for (clause::literal_vector::iterator lit = c->literals.begin(),
                     lend = c->literals.end(); lit != lend; ++lit)
                 {
