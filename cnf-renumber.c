@@ -107,13 +107,15 @@ int main(int argc, char** argv)
         {
             if(fscanf(infile, "%ld", &literal) != 1)
             {
-                char c;
-                fscanf(infile, "%c", &c);
-                if (c == 'c') {
-                    while(c != '\n') {
-                        fscanf(infile, "%c", &c);
+                if (current_nr_of_literal == 0) {
+                    char c;
+                    fscanf(infile, "%c", &c);
+                    if (c == 'c') {
+                        while(c != '\n') {
+                            fscanf(infile, "%c", &c);
+                        }
+                        goto next;
                     }
-                    goto next;
                 }
                 fprintf(stderr, "error reading file (clause %lu)\n", current_nr_of_clause + 1);
                 exit(1);
