@@ -68,12 +68,22 @@ int main(int argc, char *argv[])
 	literal_set agenda;
 
 	cnf f;
+    start:
 	for (unsigned int i = 0; i < nr_clauses; ++i) {
 		cnf::clause::ptr clause(new cnf::clause());
 
 		while (1) {
 			int literal;
 			if (fscanf(fp, "%d", &literal) != 1) {
+                char c;
+                fscanf(fp, "%c", &c);
+                if (c == 'c') {
+                    while(c != '\n') {
+                        fscanf(fp, "%c", &c);
+                    }
+                    goto start;
+                }
+
 				fprintf(stderr, "error: expected literal\n");
 				exit(EXIT_FAILURE);
 			}
