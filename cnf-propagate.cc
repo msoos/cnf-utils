@@ -75,13 +75,15 @@ int main(int argc, char *argv[])
 		while (1) {
 			int literal;
 			if (fscanf(fp, "%d", &literal) != 1) {
-                char c;
-                fscanf(fp, "%c", &c);
-                if (c == 'c') {
-                    while(c != '\n') {
-                        fscanf(fp, "%c", &c);
+                if (i == 0) {
+                    char c;
+                    fscanf(fp, "%c", &c);
+                    if (c == 'c') {
+                        while(c != '\n') {
+                            fscanf(fp, "%c", &c);
+                        }
+                        goto start;
                     }
-                    goto start;
                 }
 
 				fprintf(stderr, "error: expected literal\n");
