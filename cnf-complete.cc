@@ -7,32 +7,46 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <limits.h>
+#include <iostream>
+using std::cout;
+using std::cerr;
+using std::endl;
 
 int main(int argc, char *argv[])
 {
-    assert(argc == 2);
-    printf("c argv[1]: %s\n", argv[0]);
-    printf("c argv[1]: %s\n", argv[1]);
+    if (argc != 2) {
+        cerr << "ERROR: You must give the clause length as parameter" << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    cout << "c argv[1]: " << argv[0] << endl;
+    cout << "c argv[1]: " << argv[1] << endl;
 
     const long int nr_vars = strtol(argv[1], NULL, 10);
 
     if ((errno == ERANGE && (nr_vars == LONG_MAX || nr_vars == LONG_MIN))
-           || (errno != 0 && nr_vars == 0)) {
+        || (errno != 0 && nr_vars == 0)
+    ) {
         perror("strtol");
         exit(EXIT_FAILURE);
     }
+
     if (nr_vars > 62) {
-        fprintf(stderr, "Too large value given: %d\n", (int)nr_vars);
+        cerr << "Too large value given: " << nr_vars << endl;
         exit(EXIT_FAILURE);
     }
 
+    const unsigned long num = (1UL << nr_vars);
+    cout << "p cnf " << nr_vars << " " << num << endl;
+
     unsigned long x = 0;
     do {
-    for (int i = 0; i < nr_vars; ++i)
-        printf("%s%u ", (x >> i) & 1 ? "-" : "", 1 + i);
+        for (int i = 0; i < nr_vars; ++i)
+            cout << ((x >> i) & 1 ? "-" : "") << 1 + i << " ";
 
-        printf("0\n");
-    } while ((++x & ((1UL << nr_vars) - 1)) != 0);
+        cout << "0" << endl;
+        ++x;
+    } while (x != num);
 
     return 0;
 }
