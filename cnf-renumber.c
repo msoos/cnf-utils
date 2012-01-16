@@ -47,7 +47,7 @@ int main(int argc, char** argv)
     if (argc == 1) {
         infile = stdin;
         //infile = fdopen(0, "r");
-        printf("c reading from stdin\n");
+        //printf("c reading from stdin\n");
     } else {
         infile = fopen(argv[1], "r");
         assert(infile != NULL);
@@ -58,8 +58,8 @@ int main(int argc, char** argv)
         fprintf(stderr, "error: expected: p cnf <variables> <clauses>\n");
         exit(1);
     }
-    printf("c num vars: %ld\n", nr_of_variables);
-    printf("c num clauses: %ld\n", nr_of_clauses);
+    //printf("c num vars: %ld\n", nr_of_variables);
+    //printf("c num clauses: %ld\n", nr_of_clauses);
 
     variables = (long *)malloc((nr_of_variables + 1) * sizeof(long));
     if(variables == 0)
@@ -150,7 +150,7 @@ int main(int argc, char** argv)
             nr_of_new_clauses++;
         }
     }
-    printf("c finished reading CNF\n");
+    //printf("c finished reading CNF\n");
 
     //Re-Numbering variables
     for(i = 1,nr_of_new_variables = 0,nr_of_fixed_variable=0; i <= nr_of_variables; i++)
