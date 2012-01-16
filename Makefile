@@ -12,7 +12,8 @@ programs := \
 	cnf-pack \
 	cnf-propagate \
 	cnf-stat \
-	cnf-complete
+	cnf-complete \
+	cnf-renumber
 
 all: $(programs)
 
