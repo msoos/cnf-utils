@@ -19,9 +19,6 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    cout << "c argv[1]: " << argv[0] << endl;
-    cout << "c argv[1]: " << argv[1] << endl;
-
     const long int nr_vars = strtol(argv[1], NULL, 10);
 
     if ((errno == ERANGE && (nr_vars == LONG_MAX || nr_vars == LONG_MIN))
@@ -35,6 +32,9 @@ int main(int argc, char *argv[])
         cerr << "Too large value given: " << nr_vars << endl;
         exit(EXIT_FAILURE);
     }
+
+    cout << "c argv[0]: " << argv[0] << endl;
+    cout << "c argv[1]: " << argv[1] << endl;
 
     const unsigned long num = (1UL << nr_vars);
     cout << "p cnf " << nr_vars << " " << num << endl;
