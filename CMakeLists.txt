@@ -30,6 +30,9 @@ SET(CMAKE_C_FLAGS_RELEASE "-Wall -Werror -O3 -g0 -fno-exceptions -DNDEBUG -march
 add_executable(cnf-cat
     cnf-cat.cc
 )
+add_executable(cnf-fuzz
+    cnf-fuzz.cc
+)
 add_executable(cnf-clause
     cnf-clause.cc
 )

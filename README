@@ -97,3 +97,5 @@ Here is a short summary of the tools and their usage:
 	 1: 1
 	 2: 15608
 	 3: 29980
+ - cnf-fuzz
+        Generate a random problem
