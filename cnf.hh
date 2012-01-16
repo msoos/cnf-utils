@@ -58,74 +58,90 @@ public:
 
 	void add(clause::ptr c)
 	{
+        assert(!c->satisfied);
 		clauses.push_back(c);
 	}
 
-	void print(FILE *fp)
-	{
-        std::vector<char> litsInside;
-        long unsigned nr_variables = 0;
-        long unsigned nr_clauses = 0;
-        std::vector<char> print_clause;
-        size_t at_cl = 0;
-        for (clause_vector::iterator cit = clauses.begin(),
-            cend = clauses.end(); cit != cend
-            ; ++cit, ++at_cl)
+	void print(FILE *fp);
+};
+
+inline std::ostream& operator<<(std::ostream& os, const cnf::clause c)
+{
+    for(size_t i = 0; i < c.literals.size(); i++) {
+        os << c.literals[i] << " ";
+    }
+    os  << "0 satisfied: " << c.satisfied;
+    return os;
+}
+
+inline void cnf::print(FILE *fp)
+{
+    std::vector<char> litsInside;
+    long unsigned nr_variables = 0;
+    long unsigned nr_clauses = 0;
+    std::vector<char> print_clause;
+    size_t at_cl = 0;
+    for (clause_vector::iterator cit = clauses.begin(),
+        cend = clauses.end(); cit != cend
+        ; ++cit, ++at_cl)
+    {
+        print_clause.resize(at_cl+1, 1);
+        clause::ptr c(*cit);
+        if (c->satisfied) {
+            print_clause[at_cl]= 0;
+            continue;
+        }
+
+        litsInside.clear();
+        bool isSAT = false;
+        for (clause::literal_vector::iterator lit = c->literals.begin(),
+            lend = c->literals.end(); lit != lend; ++lit)
         {
-            print_clause.resize(at_cl+1, 1);
-            clause::ptr c(*cit);
-            if (c->satisfied) {
-                print_clause[at_cl]= 0;
-                continue;
+            nr_variables = std::max<long unsigned >(nr_variables, abs(*lit));
+
+            unsigned at = std::abs(*lit)*2;
+            unsigned atother = at;
+            if (*lit > 0) {
+                at += 1;
+            } else {
+                atother += 1;
             }
 
-            litsInside.clear();
-            bool isSAT = false;
+            unsigned mymax = std::max(at,atother);
+            if (litsInside.size() < mymax)
+                litsInside.resize(mymax+1, 0);
+
+            if (litsInside[atother]) {
+                isSAT = true;
+                print_clause[at_cl] = 0;
+            }
+            litsInside[at] = 1;
+        }
+        if (!isSAT) {
+            nr_clauses++;
+        } else {
+            //std::cout << "Satisfied clause: " << *c << std::endl;
+        }
+    }
+    printf("p cnf %lu %lu\n", nr_variables, nr_clauses);
+
+    at_cl = 0;
+    for (clause_vector::iterator cit = clauses.begin(),
+        cend = clauses.end(); cit != cend
+        ; ++cit, ++at_cl)
+    {
+        clause::ptr c(*cit);
+
+        if (print_clause[at_cl]) {
             for (clause::literal_vector::iterator lit = c->literals.begin(),
                 lend = c->literals.end(); lit != lend; ++lit)
             {
-                nr_variables = std::max<long unsigned >(nr_variables, abs(*lit));
-
-                unsigned at = std::abs(*lit)*2;
-                unsigned atother = at;
-                if (*lit > 0) {
-                    at += 1;
-                } else {
-                    atother += 1;
-                }
-
-                if (litsInside.size() < at)
-                    litsInside.resize(at+1, 0);
-
-                if (litsInside[atother]) {
-                    isSAT = true;
-                    print_clause[at_cl] = 0;
-                }
-                litsInside[at] = 1;
+                fprintf(fp, "%d ", *lit);
             }
-            if (!isSAT)
-                nr_clauses++;
+
+            fprintf(fp, "0\n");
         }
-        printf("p cnf %lu %lu\n", nr_variables, nr_clauses);
-
-        at_cl = 0;
-		for (clause_vector::iterator cit = clauses.begin(),
-			cend = clauses.end(); cit != cend
-			; ++cit, ++at_cl)
-		{
-			clause::ptr c(*cit);
-
-            if (print_clause[at_cl]) {
-                for (clause::literal_vector::iterator lit = c->literals.begin(),
-                    lend = c->literals.end(); lit != lend; ++lit)
-                {
-                    fprintf(fp, "%d ", *lit);
-                }
-
-                fprintf(fp, "0\n");
-            }
-		}
-	}
-};
+    }
+}
 
 #endif

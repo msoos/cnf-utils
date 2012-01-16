@@ -111,6 +111,7 @@ int main(int argc, char *argv[])
 		}
 
         if (!clause->satisfied) {
+            //std::cout << "Adding clause: " << *clause << std::endl;
             f.add(clause);
             if (clause->literals.size() == 1)
                 agenda.insert(clause->literals[0]);
@@ -119,6 +120,7 @@ int main(int argc, char *argv[])
 
     bool UNSAT = false;
 	while (agenda.size()) {
+        //std::cout << "agenda.size(): " << agenda.size() << std::endl;
 		literal_set::iterator it = agenda.begin();
 		cnf::literal literal = *it;
 		agenda.erase(it);
