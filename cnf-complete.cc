@@ -33,11 +33,10 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    cout << "c argv[0]: " << argv[0] << endl;
-    cout << "c argv[1]: " << argv[1] << endl;
-
     const unsigned long num = (1UL << nr_vars);
     cout << "p cnf " << nr_vars << " " << num << endl;
+    cout << "c argv[0]: " << argv[0] << endl;
+    cout << "c argv[1]: " << argv[1] << endl;
 
     unsigned long x = 0;
     do {
