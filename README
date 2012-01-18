@@ -97,5 +97,11 @@ Here is a short summary of the tools and their usage:
 	 1: 1
 	 2: 15608
 	 3: 29980
- - cnf-fuzz
-        Generate a random problem
+
+ - cnf-fuzz-nossum
+        Generate a random problem. By Vegard Nossum, with additions by
+        Mate Soos
+
+ - cnf-fuzz-biere
+        CNF fuzzer by Armin Biere (April 2010). See Armin Biere's paper
+        in SAT'10 proceedings for details

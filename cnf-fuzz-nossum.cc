@@ -146,6 +146,7 @@ int main(int, char **)
         }
     }
 
+    //Add a some completely random clauses
     size_t simpl_rand_constrs = rnd.randInt(5000);
     for (unsigned int i = 0; i < simpl_rand_constrs; ++i) {
         size_t size = 1+rnd.randNorm(10,2);
@@ -157,6 +158,7 @@ int main(int, char **)
         num_final_clauses++;
     }
 
+    //Add a some random gates
     size_t other_constraints = randNorm(200, 20);
     for(size_t i = 0; i < other_constraints; i++) {
         vector<clause> add_cls = get_gate(rnd, nr_variables);
@@ -166,6 +168,7 @@ int main(int, char **)
         }
     }
 
+    //Add a couple of unitary clauses
     for(size_t i = 0; i < 10; i++) {
         clause cl;
         cl.lits.push_back( (1-(rnd.randInt(1)*2)) * (1+rnd.randInt(nr_variables-2)) );

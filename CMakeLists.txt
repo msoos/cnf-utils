@@ -64,8 +64,11 @@ add_executable(cnf-complete
 add_executable(cnf-renumber
     cnf-renumber.c
 )
-add_executable(cnf-fuzz
-    cnf-fuzz.cc
+add_executable(cnf-fuzz-nossum
+    cnf-fuzz-nossum.cc
+)
+add_executable(cnf-fuzz-biere
+    cnf-fuzz-biere.cc
 )
 #set(CPACK_PACKAGE_NAME "cnf-utils")
 #set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "CNF utilities")

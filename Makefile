@@ -13,7 +13,8 @@ programs := \
 	cnf-stat \
 	cnf-complete \
 	cnf-renumber \
-	cnf-fuzz
+	cnf-fuzz-nossum \
+	cnf-fuzz-biere
 
 all: $(programs)
 
