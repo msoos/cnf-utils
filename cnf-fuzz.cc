@@ -94,6 +94,7 @@ int main(int, char **)
     unsigned int nr_variables = randNorm(8000, 300);
         nr_variables++;
     assert(nr_variables > 0);
+    unsigned num_final_clauses = 0;
 
     unsigned int nr_constraints = 2 + rnd.randInt(4);
 
@@ -137,6 +138,11 @@ int main(int, char **)
             }
 
             clauses.push_back(c);
+            if (!c.is_xor || !need_regular_clauses) {
+                num_final_clauses++;
+            } else {
+                num_final_clauses += 1UL << (c.lits.size()-1);
+            }
         }
     }
 
@@ -147,6 +153,8 @@ int main(int, char **)
         for(size_t i2 = 0; i2 < size; i2++) {
             cl.lits.push_back( (1-(2*rnd.randInt(1))) * (1+rnd.randInt(nr_variables-1)) );
         }
+        clauses.push_back(cl);
+        num_final_clauses++;
     }
 
     size_t other_constraints = randNorm(200, 20);
@@ -154,6 +162,7 @@ int main(int, char **)
         vector<clause> add_cls = get_gate(rnd, nr_variables);
         for(size_t i2 = 0; i2 < add_cls.size(); i2++) {
             clauses.push_back(add_cls[i2]);
+            num_final_clauses++;
         }
     }
 
@@ -161,9 +170,10 @@ int main(int, char **)
         clause cl;
         cl.lits.push_back( (1-(rnd.randInt(1)*2)) * (1+rnd.randInt(nr_variables-2)) );
         clauses.push_back(cl);
+        num_final_clauses++;
     }
 
-    printf("p cnf %u %lu\n", nr_variables, clauses.size());
+    printf("p cnf %u %lu\n", nr_variables, (long unsigned)num_final_clauses);
     for (unsigned int i = 0; i < clauses.size(); ++i) {
         const clause &c = clauses[i];
 
