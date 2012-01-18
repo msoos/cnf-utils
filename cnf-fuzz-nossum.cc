@@ -198,11 +198,11 @@ int main(int, char **)
             }
 
             //Print the literals
-            for (unsigned int k = 0; k < c.lits.size(); ++k)
+            for (unsigned int k = 0; k < c.lits.size(); ++k) {
                 printf("%d ", c.lits[k]);
+            }
+            printf("0\n");
         }
-
-        printf("0\n");
     }
 
     return 0;
