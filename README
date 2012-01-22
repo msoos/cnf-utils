@@ -105,3 +105,6 @@ Here is a short summary of the tools and their usage:
  - cnf-fuzz-biere
         CNF fuzzer by Armin Biere (April 2010). See Armin Biere's paper
         in SAT'10 proceedings for details
+
+ - cnf-fuzz-sat.py
+         Fuzzing Tool for CNF, written by Robert Daniel Brummayer, 2009
