@@ -108,3 +108,16 @@ Here is a short summary of the tools and their usage:
 
  - cnf-fuzz-sat.py
          Fuzzing Tool for CNF, written by Robert Daniel Brummayer, 2009
+
+ - compare.pl
+        Compares two solvers side-by-side, by Vegard Nossum.
+
+        Usage:
+        perl compare.pl program1 program2 args
+
+        The output from program1 will be printed in yellow/brown, while the
+        output from program2 will be printed in green. Output lines are
+        prefixed with a timestamp which is basically the number of seconds
+        (not CPU time) since the program was started. The arguments will be
+        supplied to both programs.
+
