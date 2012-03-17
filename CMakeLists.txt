@@ -8,7 +8,7 @@ ENDIF()
 
 PROJECT(cnf-utils)
 #default flags
-SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -Wall -Werror -g")
+SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -Wall -Werror -g -std=c++0x")
 SET(CMAKE_C_FLAGS_RELWITHDEBINFO "-O3 -Wall -Werror -g -std=c99")
 
 # debug flags
@@ -70,6 +70,11 @@ add_executable(cnf-fuzz-nossum
 add_executable(cnf-fuzz-biere
     cnf-fuzz-biere.cc
 )
+
+add_executable(cnf-fuzz-nossum2
+    cnf-fuzz-nossum2.cc
+)
+
 #set(CPACK_PACKAGE_NAME "cnf-utils")
 #set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "CNF utilities")
 #set(CPACK_PACKAGE_VERSION "1.0.0")
