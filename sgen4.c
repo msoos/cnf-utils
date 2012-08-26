@@ -29,7 +29,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define REORDER 2
 #define HELP 3
 #define MIN_VARIABLES 4
-#define MAX_BOOLEAN_OPTIONS 5
+#define HELP_SHORT 5
+#define MAX_BOOLEAN_OPTIONS 6
 int *booleanOptions;
 
 
@@ -194,6 +195,8 @@ void initOptions()
     booleanOptions[REORDER] = 1;
     booleanOptionTags[HELP] = "help";
     booleanOptions[HELP] = 0;
+    booleanOptionTags[HELP_SHORT] = "h";
+    booleanOptions[HELP_SHORT] = 0;
     booleanOptionTags[MIN_VARIABLES] = "min-variables";
     booleanOptions[MIN_VARIABLES] = 0;
 
@@ -347,7 +350,7 @@ void getOptions (int *argc, char * argv[])
 
     free (newArgv);
 
-    if (booleanOptions[HELP])
+    if (booleanOptions[HELP] || booleanOptions[HELP_SHORT])
     {
         printHelp();
         exit(1);
