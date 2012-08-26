@@ -107,16 +107,21 @@ int main(int argc, char** argv)
         {
             if(fscanf(infile, "%ld", &literal) != 1)
             {
+                //Check if we are at comment
                 if (current_nr_of_literal == 0) {
                     char c;
-                    fscanf(infile, "%c", &c);
+                    int ret = fscanf(infile, "%c", &c);
+                    assert(ret == 1);
                     if (c == 'c') {
                         while(c != '\n') {
-                            fscanf(infile, "%c", &c);
+                            int ret = fscanf(infile, "%c", &c);
+                            assert(ret == 1);
                         }
                         goto next;
                     }
                 }
+
+                //Not comment, so error!
                 fprintf(stderr, "error reading file (clause %lu)\n", current_nr_of_clause + 1);
                 exit(1);
             }
@@ -133,7 +138,10 @@ int main(int argc, char** argv)
                 one_clause = (long *)realloc(one_clause, preallocated_space_for_literals * sizeof(long));
             }
         }
-        fscanf(infile, "\n");
+
+        //reading end of line
+        int ret = fscanf(infile, "\n");
+        assert(ret == 1);
 
         //Check if the clause was unit
         if(current_nr_of_literal == 1)

@@ -56,10 +56,12 @@ int main(int argc, char *argv[])
     start_begin:
 	if (fscanf(fp, "p cnf %u %u\n", &nr_variables, &nr_clauses) != 2) {
         char c;
-        fscanf(fp, "%c", &c);
+        int ret = fscanf(fp, "%c", &c);
+        assert(ret == 1);
         if (c == 'c') {
             while(c != '\n') {
-                fscanf(fp, "%c", &c);
+                int ret = fscanf(fp, "%c", &c);
+                assert(ret == 1);
             }
             goto start_begin;
         }
@@ -86,10 +88,12 @@ int main(int argc, char *argv[])
 			if (fscanf(fp, "%d", &literal) != 1) {
                 if (i == 0) {
                     char c;
-                    fscanf(fp, "%c", &c);
+                    int ret = fscanf(fp, "%c", &c);
+                    assert(ret == 1);
                     if (c == 'c') {
                         while(c != '\n') {
-                            fscanf(fp, "%c", &c);
+                            int ret = fscanf(fp, "%c", &c);
+                            assert(ret == 1);
                         }
                         goto start;
                     }
