@@ -4,99 +4,99 @@ Here is a short summary of the tools and their usage:
 
  - cnf-cat [FILE] ...
 
-	Concatenate the clauses of one or more CNF files.
+    Concatenate the clauses of one or more CNF files.
 
  - cnf-clause [[LITERAL] ... 0] ...
 
-	Generate a CNF file containing the clauses specified on the command
-	line. Example:
+    Generate a CNF file containing the clauses specified on the command
+    line. Example:
 
-	$ cnf-clause 1 2 0 -1 3 0
-	p cnf 3 2
-	1 2 0
-	-1 3 0
+    $ cnf-clause 1 2 0 -1 3 0
+    p cnf 3 2
+    1 2 0
+    -1 3 0
 
  - cnf-grep VARIABLE [FILE]
 
-	Read the CNF file specified by FILE (or standard input if omitted)
-	and output the clauses containing the variable VARIABLE. Example:
+    Read the CNF file specified by FILE (or standard input if omitted)
+    and output the clauses containing the variable VARIABLE. Example:
 
-	$ cnf-clause 1 2 0 -1 3 0 | cnf-grep 2
-	p cnf 3 1
-	1 2 0
+    $ cnf-clause 1 2 0 -1 3 0 | cnf-grep 2
+    p cnf 3 1
+    1 2 0
 
  - cnf-renumber [FILE]
 
-	Read the CNF file specified by FILE (or standard input if omitted)
-	and rename the variables so that they start at 1 and go to N, where
-	N is the number of distinct variables in the input. Example:
+    Read the CNF file specified by FILE (or standard input if omitted)
+    and rename the variables so that they start at 1 and go to N, where
+    N is the number of distinct variables in the input. Example:
 
-	$ cnf-clause 100 101 0 | cnf-pack
-	p cnf 2 1
-	1 2 0
+    $ cnf-clause 100 101 0 | cnf-pack
+    p cnf 2 1
+    1 2 0
 
  - cnf-propagate [FILE]
 
-	Read the CNF file specified by FILE (or standard input if omitted)
-	and carry out unit propagation recursively until no further
-	propagations can be made. Note that no clauses are removed; both
-	unit clauses and tautologies (e.g. 1 -1 0) will remain in the output.
-	Example:
+    Read the CNF file specified by FILE (or standard input if omitted)
+    and carry out unit propagation recursively until no further
+    propagations can be made. Note that no clauses are removed; both
+    unit clauses and tautologies (e.g. 1 -1 0) will remain in the output.
+    Example:
 
-	$ cnf-clause 1 2 0 -1 3 0 -3 0 | cnf-propagate 
-	p cnf 3 3
-	2 0
-	-1 0
-	-3 0
+    $ cnf-clause 1 2 0 -1 3 0 -3 0 | cnf-propagate
+    p cnf 3 3
+    2 0
+    -1 0
+    -3 0
 
  - cnf-shuffle-clauses [FILE]
 
-	Shuffle the order of the clauses, but leave the order of literals
-	within each clause intact.
+    Shuffle the order of the clauses, but leave the order of literals
+    within each clause intact.
 
  - cnf-shuffle-literals [FILE]
 
-	Shuffle the order of the literals within each clause, but leave the
-	order of the clauses intact.
+    Shuffle the order of the literals within each clause, but leave the
+    order of the clauses intact.
 
  - cnf-shuffle-variables [FILE]
 
-	rENAME the variables randomly using a one-to-one mapping. The
-	resulting CNF output is equisatisfiable with the CNF input.
-	Example:
+    rENAME the variables randomly using a one-to-one mapping. The
+    resulting CNF output is equisatisfiable with the CNF input.
+    Example:
 
-	$ cnf-clause 1 2 3 0 | cnf-shuffle-variables 
-	p cnf 3 1
-	2 3 1 0
+    $ cnf-clause 1 2 3 0 | cnf-shuffle-variables
+    p cnf 3 1
+    2 3 1 0
 
  - cnf-sort-clauses [FILE]
 
-	Order the clauses in ascending order. Example:
+    Order the clauses in ascending order. Example:
 
-	$ cnf-clause 3 2 1 0 -3 -2 -1 0 | cnf-sort-clauses 
-	p cnf 3 2
-	-3 -2 -1 0
-	3 2 1 0
+    $ cnf-clause 3 2 1 0 -3 -2 -1 0 | cnf-sort-clauses
+    p cnf 3 2
+    -3 -2 -1 0
+    3 2 1 0
 
  - cnf-sort-literals [FILE]
 
-	Order the literals within each clause in ascending order. Example:
+    Order the literals within each clause in ascending order. Example:
 
-	$ cnf-clause 3 2 1 0 -3 -2 -1 0 | cnf-sort-literals 
-	p cnf 3 2
-	1 2 3 0
-	-3 -2 -1 0
+    $ cnf-clause 3 2 1 0 -3 -2 -1 0 | cnf-sort-literals
+    p cnf 3 2
+    1 2 3 0
+    -3 -2 -1 0
 
  - cnf-stat [FILE]
 
-	Print some simple statistics about the CNF input. Example:
+    Print some simple statistics about the CNF input. Example:
 
-	$ cnf-stat 20-r-16-160-r-00-shuffle-1.cnf 
-	Literals: 121157 (61952 negative, 59205 positive)
-	Clause length histogram:
-	 1: 1
-	 2: 15608
-	 3: 29980
+    $ cnf-stat 20-r-16-160-r-00-shuffle-1.cnf
+    Literals: 121157 (61952 negative, 59205 positive)
+    Clause length histogram:
+     1: 1
+     2: 15608
+     3: 29980
 
  - cnf-fuzz-nossum
         Generate a random problem. By Vegard Nossum, with additions by
@@ -120,4 +120,5 @@ Here is a short summary of the tools and their usage:
         prefixed with a timestamp which is basically the number of seconds
         (not CPU time) since the program was started. The arguments will be
         supplied to both programs.
+
 
