@@ -1139,5 +1139,5 @@ int main(int argc, char **argv)
 
     printClauseArray();
 
-    return 1;
+    return 0;
 }
