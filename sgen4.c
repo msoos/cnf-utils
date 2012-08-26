@@ -282,17 +282,18 @@ void printUsage()
 void printHelp()
 {
     int i;
+    printf("Usage:");
 
     for (i=0;i<MAX_BOOLEAN_OPTIONS;i++)
-        fprintf (stdout, "-[no]%s\n", booleanOptionTags[i]);
+        fprintf (stdout, "  -[no]%s\n", booleanOptionTags[i]);
     fprintf (stdout, "\n");
 
     for (i=0;i<MAX_INT_OPTIONS;i++)
-        fprintf (stdout, "-%s int\n", intOptionTags[i]);
+        fprintf (stdout, "  -%s int\n", intOptionTags[i]);
     fprintf (stdout, "\n");
 
     for (i=0;i<MAX_STRING_OPTIONS;i++)
-        fprintf (stdout, "-%s string\n", stringOptionTags[i]);
+        fprintf (stdout, "  -%s string\n", stringOptionTags[i]);
     fprintf (stdout, "\n");
 
 }
@@ -361,13 +362,23 @@ void getOptions (int *argc, char * argv[])
 
 void checkOptions()
 {
-    if ( (booleanOptions[SAT] && booleanOptions[UNSAT]) || (!booleanOptions[SAT] && !booleanOptions[UNSAT]))
+    if (!booleanOptions[SAT] && !booleanOptions[UNSAT]) {
+        printf("c no -sat or -unsat given, generating an unsatisfiable instance\n");
+        booleanOptions[UNSAT] = 1;
+    }
+
+    if ( (booleanOptions[SAT] && booleanOptions[UNSAT]))
     {
         fprintf (stderr, "You must specify either -sat or -unsat\n");
         printUsage();
     }
 
-    if (intOptions[NUM_VARIABLES] <= 0)
+    if (intOptions[NUM_VARIABLES] == 0) {
+        printf("c no number of variables given, or 0 (auto) is given, creating a problem with 100 variables\n");
+        intOptions[NUM_VARIABLES] = 100;
+    }
+
+    if (intOptions[NUM_VARIABLES] < 0)
     {
         fprintf (stderr, "You must specify num-of-variables to be at least 1\n");
         printUsage();
