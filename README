@@ -121,4 +121,24 @@ Here is a short summary of the tools and their usage:
         (not CPU time) since the program was started. The arguments will be
         supplied to both programs.
 
+ - sgen4
+        The program generates small, difficult satisfiability benchmarks in
+        the DIMACS cnf format. The benchmark is written to standard output
+        and the available options are:
+
+        -n number-of-variables        This specifies the minimum number of variables - there may be slightly more.
+        -sat                          Generate a satisfiable instance
+        -unsat                        Generate an unsatisfiable instance
+        -[no]reorder                  Randomly reorder literals and clauses in the generated instance
+        -s seed                       Specify a seed for random number generation
+        -m model-filename             If a satisfiable instance is being generated, write a satisfying model
+        -min-variables            The normal mode of operation is to be as difficult as possible for a small number of literals. This options means use as few variables as possible.
+
+        Typical usage:
+
+        sgen4 -n 60 -unsat > unsat-60.cnf
+        sgen4 -n 150 -sat > sat-60.cnf
+        sgen4 -n 150 -sat -m sat-60.model > sat-60.cnf
+
+        See file sgen4descr.pdf for further details
 

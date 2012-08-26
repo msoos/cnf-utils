@@ -75,6 +75,12 @@ add_executable(cnf-fuzz-nossum2
     cnf-fuzz-nossum2.cc
 )
 
+add_executable(sgen4
+    sgen4.c
+)
+
+target_link_libraries(sgen4 m)
+
 #set(CPACK_PACKAGE_NAME "cnf-utils")
 #set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "CNF utilities")
 #set(CPACK_PACKAGE_VERSION "1.0.0")
