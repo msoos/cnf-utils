@@ -370,7 +370,7 @@ void checkOptions()
         printUsage();
     }
 
-    if (intOptions[NUM_VARIABLES] < 0)
+    if (intOptions[NUM_VARIABLES] <= 0)
     {
         fprintf (stderr, "You must specify num-of-variables to be at least 1\n");
         printUsage();
