@@ -362,7 +362,9 @@ void getOptions (int *argc, char * argv[])
 
 void checkOptions()
 {
-    if ( (booleanOptions[SAT] && booleanOptions[UNSAT]))
+    if ( (booleanOptions[SAT] && booleanOptions[UNSAT])
+        || (!booleanOptions[SAT] && !booleanOptions[UNSAT])
+    )
     {
         fprintf (stderr, "You must specify either -sat or -unsat\n");
         printUsage();
