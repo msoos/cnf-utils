@@ -79,6 +79,11 @@ add_executable(sgen4
     sgen4.c
 )
 
+add_executable(largefuzzer
+    largefuzzer.cpp
+)
+
+
 target_link_libraries(sgen4 m)
 
 #set(CPACK_PACKAGE_NAME "cnf-utils")

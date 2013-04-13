@@ -2,7 +2,7 @@
 #include "MersenneTwister.h"
 #include <vector>
 #include <iostream>
-
+#include <time.h>
 
 using std::endl;
 using std::cout;
@@ -30,14 +30,15 @@ static uint64_t numVars;
 
 int main()
 {
-    numVars = mtrand.randInt(20000000) + 100000;
+    mtrand.seed(time(NULL));
+    numVars = mtrand.randInt(10ULL*1000ULL*1000ULL) + 5ULL*1000ULL*1000ULL;
 
     //Create MANY larege clauses
-    for(size_t i = 0, end = mtrand.randInt(100000)
+    for(size_t i = 0, end = mtrand.randInt(150000)
         ; i < end
         ; i++
     ) {
-        size_t size = mtrand.randInt(300);
+        size_t size = mtrand.randInt(250);
         size += 200;
         for(size_t i2 = 0; i2 < size; i2++) {
             cout
@@ -52,7 +53,7 @@ int main()
 
     //Lots of long binary chains
     Lit lit = Lit(mtrand.randInt(numVars), mtrand.randInt(1));
-    for(size_t i = 0, end = mtrand.randInt(20)
+    for(size_t i = 0, end = mtrand.randInt(40)
         ; i < end
         ; i++
     ) {
