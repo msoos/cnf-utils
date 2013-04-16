@@ -31,7 +31,10 @@ static uint64_t numVars;
 int main()
 {
     mtrand.seed(time(NULL));
-    numVars = mtrand.randInt(10ULL*1000ULL*1000ULL) + 5ULL*1000ULL*1000ULL;
+    numVars = mtrand.randInt(5ULL*1000ULL*1000ULL) + 1ULL*1000ULL*1000ULL;
+    if (mtrand.randInt(10) == 0) {
+        numVars += mtrand.randInt(8ULL*1000ULL*1000ULL);
+    }
 
     //Create MANY larege clauses
     for(size_t i = 0, end = mtrand.randInt(150000)

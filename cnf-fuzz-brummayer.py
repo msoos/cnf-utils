@@ -27,16 +27,16 @@ g_version = "0.1"
 g_min_num_vars = 1
 g_max_num_vars = 100
 g_num_vars = 0
-g_min_rclauses_perc = 1 
+g_min_rclauses_perc = 1
 g_max_rclauses_perc = 10
 g_rclauses_perc = 0
 g_min_rclause_len = 2
-g_max_rclause_len = 6 
+g_max_rclause_len = 6
 g_min_refs = 1
 g_id = 0
 g_nodes = {}
-g_taut = None 
-g_multilit = None 
+g_taut = None
+g_multilit = None
 g_hash = {}
 g_unfinished1 = {} #variables that have to be referenced >= g_min_refs times
 g_unfinished2 = {} #non-referenced nodes that are no variables
@@ -49,15 +49,15 @@ class Node:
     self.neg_n0 = neg_n0
     self.neg_n1 = neg_n1
     self.refs = 0
-    self.mark = 0 
+    self.mark = 0
     self.cnf_id = 0
 
 def usage():
   print "********************************************************************************"
   print "*              FuzzSAT " + g_version + "                                                     *"
   print "*              Fuzzing Tool for CNF                                            *"
-  print "*              written by Robert Daniel Brummayer, 2009                        *" 
-  print "********************************************************************************" 
+  print "*              written by Robert Daniel Brummayer, 2009                        *"
+  print "********************************************************************************"
   print ""
   print "usage: fuzzsat [<option>...]"
   print ""
@@ -147,7 +147,7 @@ for o, a in opts:
     if g_max_rclause_len < 1:
       print "maximum random clause length must not be < 1"
       sys.exit(1)
- 
+
 if g_min_num_vars > g_max_num_vars:
   print "minimum number of variables must not be > maximum"
   sys.exit(1)
@@ -228,7 +228,7 @@ while len(stack) > 0:
   if cur.mark == 2:
     continue
 
-  if cur.kind == VAR: 
+  if cur.kind == VAR:
     assert (cur.cnf_id == 0)
     cur.cnf_id = cnf_id
     cnf_id += 1
@@ -253,17 +253,17 @@ while len(stack) > 0:
       assert (z != 0)
       if cur.neg_n1:
         z = -z
-       
+
       if cur.kind == AND:
         if g_taut or -x != -y:
           cnf += str(-x)
-          if g_multilit or -x != y: 
+          if g_multilit or -x != y:
             cnf += " " + str(y)
           cnf += " 0\n"
           num_clauses += 1
         if g_taut or -x != -z:
           cnf += str(-x)
-          if g_multilit or -x != z: 
+          if g_multilit or -x != z:
             cnf += " " + str(z)
           cnf += " 0\n"
           num_clauses += 1
@@ -278,13 +278,13 @@ while len(stack) > 0:
       elif cur.kind == OR:
         if g_taut or x != y:
           cnf += str(x)
-          if g_multilit or x != -y: 
+          if g_multilit or x != -y:
             cnf += " " + str(-y)
           cnf += " 0\n"
           num_clauses += 1
         if g_taut or x != z:
           cnf += str(x)
-          if g_multilit or x != -z: 
+          if g_multilit or x != -z:
             cnf += " " + str(-z)
           cnf += " 0\n"
           num_clauses += 1
