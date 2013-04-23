@@ -21,9 +21,10 @@ for f in sys.argv :
             continue
 
         for part in line.split() :
-            headerNumVars = max(headerNumVars, int(part))
+            thisnumvars = max(thisnumvars, int(part))
 
         headerNumCls += 1
+    headerNumVars += thisnumvars
 
 print "p cnf %d %d" % (headerNumVars, headerNumCls)
 
