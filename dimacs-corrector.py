@@ -14,10 +14,10 @@ def check_regular_clause(line, maxvar):
     if (var == 0) : break
     maxvar = max(var, maxvar)
   return maxvar
-  
+
 def doit(fname):
   print "Examining CNF file %s" %(fname)
-  
+
   f = gzip.open(fname, "r")
   maxvar = 0
   clauses = 0

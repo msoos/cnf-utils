@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+from __future__ import with_statement
 import sys, string, os
 
 print "c %s" % sys.argv
@@ -15,16 +15,16 @@ for f in sys.argv :
         continue
 
     thisnumvars = 0
-    ins = open( f, "r" )
-    for line in ins :
-        if line[0] == 'p' or line[0] == 'c' :
-            continue
+    with open( f, "r" ) as ins :
+        for line in ins :
+            if line[0] == 'p' or line[0] == 'c' :
+                continue
 
-        for part in line.split() :
-            thisnumvars = max(thisnumvars, int(part))
+            for part in line.split() :
+                thisnumvars = max(thisnumvars, abs(int(part)))
 
-        headerNumCls += 1
-    headerNumVars += thisnumvars
+            headerNumCls += 1
+        headerNumVars += thisnumvars
 
 print "p cnf %d %d" % (headerNumVars, headerNumCls)
 
@@ -38,44 +38,40 @@ for f in sys.argv :
         continue
 
     thisnumvars = 0
-    ins = open( f, "r" )
-    for line in ins:
-        #ignore header and comments
-        if line[0] == 'p' or line[0] == 'c' :
-            continue
+    with open( f, "r" ) as ins :
+        for line in ins:
+            #ignore header and comments
+            if line[0] == 'p' or line[0] == 'c' :
+                continue
 
-        line = line.rstrip().lstrip()
-        parts = line.split()
-        towrite = ""
-        for part in parts :
-            #end of line
-            if (part == "0") :
-                towrite += "0"
-                #sys.stdout.write("0\n")
-                break
+            line = line.rstrip().lstrip()
+            parts = line.split()
+            towrite = ""
+            for part in parts :
+                #end of line
+                if (part == "0") :
+                    towrite += "0"
+                    #sys.stdout.write("0\n")
+                    break
 
-            #update number of variables in this part
-            if int(part) > thisnumvars :
-                thisnumvars = int(part)
+                #update number of variables in this part
+                thisnumvars = max(thisnumvars, abs(int(part)))
 
-            #increment variable number if need be
-            newLit = abs(int(part)) + numvarsUntilNow
+                #increment variable number if need be
+                newLit = abs(int(part)) + numvarsUntilNow
 
-            #invert if needed
-            if (int(part) < 0) :
-                newLit = -1*newLit
+                #invert if needed
+                if (int(part) < 0) :
+                    newLit = -1*newLit
 
-            #write updated literal
-            towrite += "%s " % newLit #sys.stdout.write("%d " % newLit)
+                #write updated literal
+                towrite += "%s " % newLit #sys.stdout.write("%d " % newLit)
 
-        #end of this line in file
-        print towrite
+            #end of this line in file
+            print towrite
 
     #next part has to be updated with incremented varaibles
     numvarsUntilNow += thisnumvars
-
-
-
 
 #file1 = sys.argv[1]
 #file2 = sys.argv[2]
