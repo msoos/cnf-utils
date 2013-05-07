@@ -9,22 +9,6 @@ using std::cout;
 using std::vector;
 using CMSat::Lit;
 
-/*struct Clause
-{
-    vector<Lit> lits;
-};
-
-std::ostream& operator<<(std::ostream& os, const Clause& cl)
-{
-    for(size_t i = 0; i < cl.lits.size(); i++) {
-        os << cl[i];
-    }
-
-    os << "0" << endl;
-
-    return os;
-}*/
-
 static MTRand mtrand;
 static uint64_t numVars;
 
@@ -36,8 +20,17 @@ int main()
         numVars += mtrand.randInt(8ULL*1000ULL*1000ULL);
     }
 
+    size_t numLargeClauses = mtrand.randInt(150000);
+    size_t numSmallClauses = 100ULL*10000ULL + mtrand.randInt(600ULL*1000ULL);
+    cout << "c small clauses: " << numSmallClauses << endl;
+    cout << "c large clauses: " << numLargeClauses << endl;
+    cout
+    << "p cnf " << numVars + 1
+    << " " << numLargeClauses + numSmallClauses
+    << endl;
+
     //Create MANY larege clauses
-    for(size_t i = 0, end = mtrand.randInt(150000)
+    for(size_t i = 0, end = numLargeClauses
         ; i < end
         ; i++
     ) {
@@ -55,11 +48,11 @@ int main()
     alreadyHit.resize((numVars+1)*2, 0);
 
     //Lots of long binary chains
+    size_t numSmall = 0;
     Lit lit = Lit(mtrand.randInt(numVars), mtrand.randInt(1));
-    for(size_t i = 0, end = mtrand.randInt(40)
-        ; i < end
-        ; i++
-    ) {
+    size_t i = 0;
+    while(numSmall < numSmallClauses) {
+        i++;
         //Pick a fresh one that hasn't been hit yet
         do {
             lit = Lit(
@@ -95,6 +88,11 @@ int main()
                 << " "
                 << lit2
                 << " 0" << endl;
+                numSmall++;
+
+                //Exit if the number of small clauses is the right amount
+                if (numSmall == numSmallClauses)
+                    return 0;
             }
 
             //Chain next one
