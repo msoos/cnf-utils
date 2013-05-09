@@ -38,7 +38,7 @@ for thisxorsize in xorclsizes :
 
     #create varlist
     for a in range(thisxorsize) :
-        var = random.randint(0,numvars)
+        var = random.randint(1,numvars)
         while var in varlist :
             var = random.randint(1,numvars)
 
