@@ -10,8 +10,11 @@ import getopt, sys
 import sys
 
 def check_regular_clause(line, maxvar):
-    lits = line.split()
-    for lit in lits :
+    for lit in line.split() :
+        lit = lit.rstrip().lstrip()
+        if lit == "d" :
+            continue
+
         numlit = int(lit)
         var = abs(numlit)
 
@@ -64,7 +67,22 @@ def doit(fname):
         if len(line) == 0 or line[0] == "p" or line[0] == "c" :
             continue
 
-        print line
+        for lit in line.split() :
+            lit = lit.rstrip().lstrip()
+            if lit == "d" :
+                sys.stdout.write("d ")
+                continue
+
+            #OK, must be good
+            lit = int(lit)
+
+            #end of line
+            if (lit == 0) :
+                break
+
+            #regular variable
+            sys.stdout.write("%d " % lit)
+        print "0"
 
     #finish up
     f.close()
