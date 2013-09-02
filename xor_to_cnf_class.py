@@ -7,17 +7,52 @@ class XorToCNF :
     def get_max_var(self, clause) :
         maxvar = 0
 
-        clause = clause.strip()
-        assert len(clause) > 0
-        assert re.search(r'^x?-?\d+', clause)
-        for lit in clause.split():
+        tmp = clause.strip()
+        if len(tmp) == 0:
+            return 0
+
+        assert re.search(r'^x?-?\d+', tmp)
+
+        if tmp[0] == 'x' :
+            tmp = tmp[1:]
+
+        for lit in tmp.split():
             var = abs(int(lit))
             maxvar = max(var, maxvar)
 
         return maxvar
 
     def convert(self, infilename, outfilename) :
-        maxvar = self.get_max_var(infilename)
+        maxvar, numcls, extravars_needed, extracls_needed = self.get_stats(infilename)
+        fout = open(outfilename, "w")
+        fout.write("p cnf %d %d\n" % (maxvar + extravars_needed, numcls + extracls_needed))
+        fin = open(infilename, "r")
+        atvar = maxvar
+        for line in fin:
+            line = line.strip()
+
+            #skip empty line
+            if len(line) == 0:
+                continue;
+
+            #skip header and comments
+            if line[0] == 'c' or line[0] == 'p':
+                continue
+
+            if line[0] == 'x':
+                #convert XOR to normal(s)
+                xorclauses, atvar = self.cut_up_xor_to_n(line, atvar)
+                for xorcl in xorclauses:
+                    cls = self.to_xor_simple(xorcl)
+                    for cl in cls:
+                        fout.write(cl + "\n")
+            else:
+                #simply print normal clause
+                fout.write(line + "\n")
+
+        fout.close()
+        fin.close()
+
 
     def popcount(self, x):
         return bin(x).count('1')
@@ -70,6 +105,14 @@ class XorToCNF :
         xors = []
         #print "numxorsret: ", num_xors_ret
 
+        #xor clause that doesn't need to be cut up
+        if len(lits) <= self.cutsize:
+            retcl = "x"
+            for lit in lits:
+                retcl += "%d " % lit
+            retcl += "0"
+            return [[retcl], oldmaxvar]
+
         at = 0
         newmaxvar = oldmaxvar
         while(at < len(lits)):
@@ -93,9 +136,9 @@ class XorToCNF :
                 newmaxvar += 1
             elif until == len(lits) :
                 #end, only add the one we already made
-                thisxor += "%d 0" % (newmaxvar)
+                thisxor += "-%d 0" % (newmaxvar)
             else:
-                thisxor += "%d %d 0" % (newmaxvar, newmaxvar+1)
+                thisxor += "-%d %d 0" % (newmaxvar, newmaxvar+1)
                 newmaxvar += 1
 
             xors.append(thisxor)
@@ -106,6 +149,9 @@ class XorToCNF :
         return [xors, newmaxvar]
 
     def num_extra_vars_cls_needed(self, numlits) :
+        def cls_for_plain_xor(numlits):
+            return 2**(numlits-1)
+
         varsneeded = 0
         clsneeded = 0
 
@@ -116,29 +162,30 @@ class XorToCNF :
                 if numlits > self.cutsize :
                     at += self.cutsize-1
                     varsneeded += 1
-                    clsneeded += 2**(self.cutsize-1)
+                    clsneeded += cls_for_plain_xor(self.cutsize)
                 else:
                     at = numlits
-                    clsneeded += 2**(numlits-1)
+                    clsneeded += cls_for_plain_xor(numlits)
 
             #in the middle
             elif at + (self.cutsize-1) < numlits :
                 at += self.cutsize-2
                 varsneeded += 1
-                clsneeded += 2**(self.cutsize-1)
+                clsneeded += cls_for_plain_xor(self.cutsize)
             #at the end
             else:
-                clsneeded += 2**(numlits-at+1)
+                clsneeded += cls_for_plain_xor(numlits-at+1)
                 at = numlits
 
         return [varsneeded, clsneeded]
 
-
-
-    def get_max_var_from_infile(self, infilename) :
+    def get_stats(self, infilename) :
         infile = open(infilename, "r")
 
         maxvar = 0
+        numcls = 0
+        extravars_needed = 0
+        extracls_needed = 0
         for line in infile:
             line = line.strip()
 
@@ -150,8 +197,17 @@ class XorToCNF :
             if line[0] == 'p' or line[0] == 'c':
                 continue
 
-            #print line
-            maxvar = max(get_max_var(clause), maxvar)
+            #get max var
+            maxvar = max(self.get_max_var(line), maxvar)
+
+            if line[0] == 'x' :
+                e_var, e_clause = self.num_extra_vars_cls_needed(len(self.parse_xor(line)))
+                extravars_needed += e_var
+                extracls_needed  += e_clause
+            else:
+                numcls += 1
 
         infile.close()
+
+        return [maxvar, numcls, extravars_needed, extracls_needed]
 
