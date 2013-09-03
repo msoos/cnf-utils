@@ -40,14 +40,15 @@ class TestSequenceFunctions(unittest.TestCase):
     def test_cut_xor(self):
         x = XorToCNF()
         self.assertEqual(x.cut_up_xor_to_n("x0", 2), [["x0"], 2])
+        self.assertEqual(x.cut_up_xor_to_n("x1 0", 2), [["x1 0"], 2])
         self.assertEqual(x.cut_up_xor_to_n("x1 2 0", 2), [["x1 2 0"], 2])
-        self.assertEqual(x.cut_up_xor_to_n("x1 2 3 4 5 0", 5), [["x1 2 3 6 0", "x4 5 6 0"], 6])
-        self.assertEqual(x.cut_up_xor_to_n("x1 2 3 4 5 6 0", 6), [["x1 2 3 7 0", "x4 5 6 7 0"], 7])
-        self.assertEqual(x.cut_up_xor_to_n("x1 2 3 4 5 6 7 0", 7), [["x1 2 3 8 0", "x4 5 8 9 0", "x6 7 9 0"], 9])
+        self.assertEqual(x.cut_up_xor_to_n("x1 2 3 4 5 0", 5), [["x1 2 3 6 0", "x4 5 -6 0"], 6])
+        self.assertEqual(x.cut_up_xor_to_n("x1 2 3 4 5 6 0", 6), [["x1 2 3 7 0", "x4 5 6 -7 0"], 7])
+        self.assertEqual(x.cut_up_xor_to_n("x1 2 3 4 5 6 7 0", 7), [["x1 2 3 8 0", "x4 5 -8 9 0", "x6 7 -9 0"], 9])
 
         #simpler
         x.cutsize = 3
-        self.assertEqual(x.cut_up_xor_to_n("x1 2 3 4 5 0", 5), [["x1 2 6 0", "x3 6 7 0", "x4 5 7 0"], 7])
+        self.assertEqual(x.cut_up_xor_to_n("x1 2 3 4 5 0", 5), [["x1 2 6 0", "x3 -6 7 0", "x4 5 -7 0"], 7])
 
     def test_num_extra_var_needed(self):
         x = XorToCNF()
