@@ -104,6 +104,7 @@ class XorToCNF :
 
     def cut_up_xor_to_n(self, xorclause, oldmaxvar) :
         assert self.cutsize > 2
+
         lits = self.parse_xor(xorclause)
         assert lits > 4
 
