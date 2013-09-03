@@ -55,6 +55,7 @@ class XorToCNF :
                 #simply print normal clause
                 fout.write(line + "\n")
 
+        assert atvar == maxvar + extravars_needed
         fout.close()
         fin.close()
 
