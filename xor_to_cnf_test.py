@@ -18,25 +18,25 @@ class TestSequenceFunctions(unittest.TestCase):
         self.assertEqual(x.get_max_var(""), 0)
         self.assertEqual(x.get_max_var("x4 0"), 4)
 
-    def test_to_xor_simple(self):
+    def test_xor_to_cnf_simple(self):
         x = XorToCNF()
-        self.assertEqual(x.to_xor_simple("x0", True), [])
-        self.assertEqual(x.to_xor_simple("x1 0", True), ["1 0"])
-        self.assertEqual(x.to_xor_simple("x-1 0", True), ["-1 0"])
+        self.assertEqual(x.xor_to_cnf_simple("x0", True), [])
+        self.assertEqual(x.xor_to_cnf_simple("x1 0", True), ["1 0"])
+        self.assertEqual(x.xor_to_cnf_simple("x-1 0", True), ["-1 0"])
 
-        self.assertEqual(x.to_xor_simple("x1 0", False), ["-1 0"])
-        self.assertEqual(x.to_xor_simple("x-1 0", False), ["1 0"])
+        self.assertEqual(x.xor_to_cnf_simple("x1 0", False), ["-1 0"])
+        self.assertEqual(x.xor_to_cnf_simple("x-1 0", False), ["1 0"])
 
         #1 = 2
-        self.assertEqual(x.to_xor_simple("x1 2 0", False), ["-1 2 0", "1 -2 0"])
-        self.assertEqual(x.to_xor_simple("x1 -2 0", True), ["1 -2 0", "-1 2 0"])
+        self.assertEqual(x.xor_to_cnf_simple("x1 2 0", False), ["-1 2 0", "1 -2 0"])
+        self.assertEqual(x.xor_to_cnf_simple("x1 -2 0", True), ["1 -2 0", "-1 2 0"])
 
         #1 != 2
-        self.assertEqual(x.to_xor_simple("x1 2 0", True), ["1 2 0", "-1 -2 0"])
-        self.assertEqual(x.to_xor_simple("x1 -2 0", False), ["-1 -2 0", "1 2 0"])
+        self.assertEqual(x.xor_to_cnf_simple("x1 2 0", True), ["1 2 0", "-1 -2 0"])
+        self.assertEqual(x.xor_to_cnf_simple("x1 -2 0", False), ["-1 -2 0", "1 2 0"])
 
         #1 + 2 + 3 = 0
-        self.assertEqual(x.to_xor_simple("x1 2 3 0", False), ["-1 2 3 0", "1 -2 3 0", "1 2 -3 0", "-1 -2 -3 0"])
+        self.assertEqual(x.xor_to_cnf_simple("x1 2 3 0", False), ["-1 2 3 0", "1 -2 3 0", "1 2 -3 0", "-1 -2 -3 0"])
 
     def test_cut_xor(self):
         x = XorToCNF()

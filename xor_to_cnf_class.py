@@ -48,7 +48,7 @@ class XorToCNF :
                 #convert XOR to normal(s)
                 xorclauses, atvar = self.cut_up_xor_to_n(line, atvar)
                 for xorcl in xorclauses:
-                    cls = self.to_xor_simple(xorcl)
+                    cls = self.xor_to_cnf_simple(xorcl)
                     for cl in cls:
                         fout.write(cl + "\n")
             else:
@@ -76,7 +76,7 @@ class XorToCNF :
         return lits
 
 
-    def to_xor_simple(self, xorclause, equals = True) :
+    def xor_to_cnf_simple(self, xorclause, equals = True) :
         assert equals == True or equals == False
         if equals == True:
             equals = 1
