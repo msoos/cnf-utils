@@ -23,6 +23,11 @@ class XorToCNF :
         return maxvar
 
     def convert(self, infilename, outfilename) :
+        assert isinstance( self.cutsize, int )
+        if self.cutsize <= 2:
+            print "ERROR: The cut size MUST be larger or equal to 3"
+            exit(-1)
+
         maxvar, numcls, extravars_needed, extracls_needed = self.get_stats(infilename)
         fout = open(outfilename, "w")
         fout.write("p cnf %d %d\n" % (maxvar + extravars_needed, numcls + extracls_needed))

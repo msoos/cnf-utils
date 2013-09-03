@@ -14,16 +14,13 @@ class PlainHelpFormatter(optparse.IndentedHelpFormatter):
         else:
             return ""
 
+xortocnf = XorToCNF()
 parser = optparse.OptionParser(usage=usage, description=desc, formatter=PlainHelpFormatter())
 
-#parser.add_option("--infile", dest="input_file", required=True, metavar="INFILE"
-                    #, default=None
-                    #, help="Convert this file with XORs"
-                    #)
-#parser.add_option("--outfile", dest="output_file", required=True, metavar="OUTFILE"
-                    #, default=None
-                    #, help="Against this solution"
-                    #)
+parser.add_option("--cutsize", dest="cutsize", metavar="CUTSIZE", type=int
+                    , default=xortocnf.cutsize
+                    , help="The size of the XOR where it's 'cut'. If it's 4, the XORs will first be cut into 4-long chunks (with extra variables) and then convert to regular clauses"
+                    )
 
 (options, args) = parser.parse_args()
 
@@ -31,6 +28,7 @@ if len(args) != 2 :
     print "ERROR: You must give 2 files as positional arguments, these will be the input and the output, respectively"
     exit(-1)
 
-xortocnf = XorToCNF()
+
+xortocnf.cutsize = options.cutsize
 xortocnf.convert(args[0], args[1])
 
