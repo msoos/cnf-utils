@@ -11,7 +11,7 @@ class XorToCNF :
         if len(tmp) == 0:
             return 0
 
-        assert re.search(r'^x?-?\d+', tmp)
+        assert re.search(r'^x? *-?\d+', tmp)
 
         if tmp[0] == 'x' :
             tmp = tmp[1:]
