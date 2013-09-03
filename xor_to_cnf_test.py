@@ -20,6 +20,7 @@ class TestSequenceFunctions(unittest.TestCase):
 
     def test_to_xor_simple(self):
         x = XorToCNF()
+        self.assertEqual(x.to_xor_simple("x0", True), [])
         self.assertEqual(x.to_xor_simple("x1 0", True), ["1 0"])
         self.assertEqual(x.to_xor_simple("x-1 0", True), ["-1 0"])
 

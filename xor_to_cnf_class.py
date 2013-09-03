@@ -85,6 +85,10 @@ class XorToCNF :
 
         lits = self.parse_xor(xorclause)
 
+        #empty XOR clause is TRUE, so is NOT an empty clause (i.e. UNSAT)
+        if len(lits) == 0:
+            return []
+
         ret = []
         for i in range(2**(len(lits))) :
             #only the ones we need
