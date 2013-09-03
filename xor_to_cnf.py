@@ -19,7 +19,7 @@ parser = optparse.OptionParser(usage=usage, description=desc, formatter=PlainHel
 
 parser.add_option("--cutsize", dest="cutsize", metavar="CUTSIZE", type=int
                     , default=xortocnf.cutsize
-                    , help="The size of the XOR where it's 'cut'. If it's 4, the XORs will first be cut into 4-long chunks (with extra variables) and then convert to regular clauses"
+                    , help="The size of the XOR where it's 'cut'. If it's 4, the XORs will first be cut into 4-long chunks (with extra variables included) and then converted to regular clauses each of size 8(=2**(cutsize-1))"
                     )
 
 (options, args) = parser.parse_args()
