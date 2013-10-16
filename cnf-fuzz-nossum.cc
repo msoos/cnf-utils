@@ -182,7 +182,7 @@ int main(int, char **)
 
         //If XOR, handle differently
         if (c.is_xor && need_regular_clauses) {
-            for (unsigned int k = 0; k < (1 << c.lits.size()); ++k) {
+            for (unsigned int k = 0; k < (1U << c.lits.size()); ++k) {
                 if (__builtin_parity(k))
                     continue;
 
