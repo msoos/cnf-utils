@@ -43,7 +43,6 @@ int main(int argc, char *argv[])
 			max_nr_variables = variable;
 	}
 
-	printf("p cnf %d %lu\n", max_nr_variables, f.clauses.size());
 	f.print(stdout);
 	return 0;
 }
