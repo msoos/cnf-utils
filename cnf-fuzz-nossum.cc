@@ -98,6 +98,8 @@ int main(int, char **)
 
     unsigned int nr_constraints = 2 + rnd.randInt(4);
 
+    vector<unsigned int> offsets;
+    vector<char> polarities;
     for (unsigned int i = 0; i < nr_constraints; ++i) {
         //Only every 15th should be an XOR
         bool is_xor = (rnd.randInt(3) == 1);
@@ -108,8 +110,8 @@ int main(int, char **)
         } else {
             size = 1 + randNorm(3, 2);
         }
-        unsigned int offsets[size];
-        bool polarities[size];
+        offsets.resize(size);
+        polarities.resize(size);
 
         //Set offsets and polarities
         for (unsigned int j = 0; j < size; ++j) {
