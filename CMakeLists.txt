@@ -8,16 +8,16 @@ ENDIF()
 
 PROJECT(cnf-utils)
 #default flags
-SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -Wall -pedantic -Werror -g -std=c++0x")
-SET(CMAKE_C_FLAGS_RELWITHDEBINFO "-O3 -Wall -pedantic -Werror -g -std=c99")
+SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -Wall -pedantic -g -std=c++0x")
+SET(CMAKE_C_FLAGS_RELWITHDEBINFO "-O3 -Wall -pedantic -g -std=c99")
 
 # debug flags
-SET(CMAKE_CXX_FLAGS_DEBUG "-Wall -Werror -O0 -g")
-SET(CMAKE_C_FLAGS_DEBUG "-Wall -Werror -O0 -g -std=c99")
+SET(CMAKE_CXX_FLAGS_DEBUG "-Wall -O0 -g")
+SET(CMAKE_C_FLAGS_DEBUG "-Wall -O0 -g -std=c99")
 
 # release flags
-SET(CMAKE_CXX_FLAGS_RELEASE "-Wall -Werror -O3 -g0 -fno-exceptions -DNDEBUG -march=native")
-SET(CMAKE_C_FLAGS_RELEASE "-Wall -Werror -O3 -g0 -fno-exceptions -DNDEBUG -march=native -std=c99")
+SET(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -g0 -fno-exceptions -DNDEBUG -march=native")
+SET(CMAKE_C_FLAGS_RELEASE "-Wall -O3 -g0 -fno-exceptions -DNDEBUG -march=native -std=c99")
 
 add_executable(cnf-cat
     cnf-cat.cc
