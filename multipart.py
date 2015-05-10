@@ -9,13 +9,13 @@ print "c %s" % sys.argv
 headerNumVars = 0
 headerNumCls = 0
 at = 0
-for f in sys.argv :
+for fname in sys.argv :
     at+=1
     if at == 1 :
         continue
 
     thisnumvars = 0
-    with open( f, "r" ) as ins :
+    with open( fname, "r" ) as ins :
         for line in ins :
             if line[0] == 'p' or line[0] == 'c' :
                 continue
@@ -65,7 +65,7 @@ for f in sys.argv :
                     newLit = -1*newLit
 
                 #write updated literal
-                towrite += "%s " % newLit #sys.stdout.write("%d " % newLit)
+                towrite += "%d " % newLit #sys.stdout.write("%d " % newLit)
 
             #end of this line in file
             print towrite

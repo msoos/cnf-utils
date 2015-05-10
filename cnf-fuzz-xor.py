@@ -2,9 +2,9 @@
 
 import random, sys
 
-numvars = random.randint(500,5000)
+numvars = random.randint(20,200)
 numunits = random.randint(0,15)
-numlongs = random.randint(100, numvars*2)
+numlongs = random.randint(numvars, numvars*3)
 numcls = numunits + numlongs
 
 xorclsizes = []

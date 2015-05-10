@@ -85,13 +85,3 @@ add_executable(largefuzzer
 
 
 target_link_libraries(sgen4 m)
-
-#set(CPACK_PACKAGE_NAME "cnf-utils")
-#set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "CNF utilities")
-#set(CPACK_PACKAGE_VERSION "1.0.0")
-#set(CPACK_PACKAGE_VERSION_MAJOR "1")
-#set(CPACK_PACKAGE_VERSION_MINOR "0")
-#set(CPACK_PACKAGE_VERSION_PATCH "0")
-#set(CPACK_GENERATOR TGZ)
-#include(CPack)
-
