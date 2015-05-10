@@ -19,14 +19,6 @@ SET(CMAKE_C_FLAGS_DEBUG "-Wall -Werror -O0 -g -std=c99")
 SET(CMAKE_CXX_FLAGS_RELEASE "-Wall -Werror -O3 -g0 -fno-exceptions -DNDEBUG -march=native")
 SET(CMAKE_C_FLAGS_RELEASE "-Wall -Werror -O3 -g0 -fno-exceptions -DNDEBUG -march=native -std=c99")
 
-# FIND_PACKAGE(OpenMP REQUIRED)
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-# set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-
-# find_package( Boost 1.34 REQUIRED COMPONENTS program_options)
-# link_directories ( ${Boost_LIBRARY_DIRS} )
-# include_directories ( ${Boost_INCLUDE_DIRS} )
-
 add_executable(cnf-cat
     cnf-cat.cc
 )
