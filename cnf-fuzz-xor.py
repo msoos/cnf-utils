@@ -1,6 +1,15 @@
 #!/usr/bin/env python
 
 import random, sys
+import optparse
+
+parser = optparse.OptionParser()
+parser.add_option("--seed", metavar= "SEED", dest="seed", type=int
+                    , help="seed value"
+                    )
+(options, args) = parser.parse_args()
+if options.seed != None:
+    random.seed(options.seed)
 
 numvars = random.randint(20,200)
 numunits = random.randint(0,15)
