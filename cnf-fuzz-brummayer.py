@@ -69,6 +69,7 @@ def usage():
   print "  -t              allow tautological clauses"
   print "  -m              allow multiple occurrences"
   print "                  of literals in clauses"
+  print "  -s <s>          set random seed (default: random value)"
   print ""
   print "  -i <v>          use min <v> input variables          (default     1)"
   print "  -I <v>          use max <v> input variables          (default   100)"
@@ -89,7 +90,7 @@ signal.signal (signal.SIGQUIT, sighandler)
 signal.signal (signal.SIGHUP, sighandler)
 
 try:
-  opts, args = getopt.getopt(sys.argv[1:], "hVtmi:I:r:p:P:l:L:")
+  opts, args = getopt.getopt(sys.argv[1:], "hVtmi:I:r:p:P:l:L:s:")
 except getopt.GetoptError, err:
   print str(err)
   usage()
@@ -147,6 +148,8 @@ for o, a in opts:
     if g_max_rclause_len < 1:
       print "maximum random clause length must not be < 1"
       sys.exit(1)
+  elif o in ("-s"):
+    random.seed(int(a))
 
 if g_min_num_vars > g_max_num_vars:
   print "minimum number of variables must not be > maximum"
