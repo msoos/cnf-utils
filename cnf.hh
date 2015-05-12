@@ -86,16 +86,15 @@ inline void cnf::print(FILE *fp)
         ; ++cit, ++at_cl)
     {
         print_clause.resize(at_cl+1, 1);
-        clause::ptr c(*cit);
-        if (c->satisfied) {
+        if ((*cit)->satisfied) {
             print_clause[at_cl]= 0;
             continue;
         }
 
         litsInside.clear();
         bool isSAT = false;
-        for (clause::literal_vector::iterator lit = c->literals.begin(),
-            lend = c->literals.end(); lit != lend; ++lit)
+        for (clause::literal_vector::iterator lit = (*cit)->literals.begin(),
+            lend = (*cit)->literals.end(); lit != lend; ++lit)
         {
             nr_variables = std::max<long unsigned >(nr_variables, abs(*lit));
 
@@ -120,7 +119,7 @@ inline void cnf::print(FILE *fp)
         if (!isSAT) {
             nr_clauses++;
         } else {
-            //std::cout << "Satisfied clause: " << *c << std::endl;
+            //std::cout << "Satisfied clause: " << *(*cit) << std::endl;
         }
     }
     printf("p cnf %lu %lu\n", nr_variables, nr_clauses);
@@ -130,11 +129,9 @@ inline void cnf::print(FILE *fp)
         cend = clauses.end(); cit != cend
         ; ++cit, ++at_cl)
     {
-        clause::ptr c(*cit);
-
         if (print_clause[at_cl]) {
-            for (clause::literal_vector::iterator lit = c->literals.begin(),
-                lend = c->literals.end(); lit != lend; ++lit)
+            for (clause::literal_vector::iterator lit = (*cit)->literals.begin(),
+                lend = (*cit)->literals.end(); lit != lend; ++lit)
             {
                 fprintf(fp, "%d ", *lit);
             }
