@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <time.h>
+#include <string.h>
 
 using std::endl;
 using std::cout;
@@ -12,9 +13,21 @@ using CMSat::Lit;
 static MTRand mtrand;
 static uint64_t numVars;
 
-int main()
+int main(int argc, char** argv)
 {
-    mtrand.seed(time(NULL));
+    int seed = time(NULL);
+    if (argc >= 2) {
+        char* end = NULL;
+        seed = strtol(argv[1], &end, 10);
+        if (end != argv[1] + strlen(argv[1])) {
+            cout << "ERROR Seed value you gave was not an integer!" << endl;
+            exit(-1);
+        }
+        cout << "c using set value " << seed << " as seed" << endl;
+    } else {
+        cout << "c using time(NULL) as seed" << endl;
+    }
+    mtrand.seed();
     numVars = mtrand.randInt(5ULL*1000ULL*1000ULL) + 1ULL*1000ULL*1000ULL;
     if (mtrand.randInt(10) == 0) {
         numVars += mtrand.randInt(8ULL*1000ULL*1000ULL);
