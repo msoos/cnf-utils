@@ -2,6 +2,14 @@
 
 import random
 import sys
+import optparse
+
+parser = optparse.OptionParser()
+parser.add_option("--seed", "-s", metavar="SEED", dest="seed", type=int,
+                  help="random seed value")
+(options, args) = parser.parse_args()
+if options.seed is not None:
+    random.seed(options.seed)
 
 numvars = random.randint(500, 10000)
 numunits = random.randint(0, 15)
