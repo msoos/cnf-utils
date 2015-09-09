@@ -11,9 +11,9 @@ parser.add_option("--seed", "-s", metavar="SEED", dest="seed", type=int,
 if options.seed is not None:
     random.seed(options.seed)
 
-numvars = random.randint(500, 10000)
+numvars = random.randint(300, 2000)
 numunits = random.randint(0, 15)
-numlongs = random.randint(100, numvars * 2)
+numlongs = random.randint(100, numvars)
 numcls = numunits + numlongs
 
 xorclsizes = []
