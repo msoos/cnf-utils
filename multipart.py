@@ -21,6 +21,8 @@ for fname in sys.argv :
                 continue
 
             for part in line.split() :
+                if part.strip() == 'x':
+                    continue
                 thisnumvars = max(thisnumvars, abs(int(part)))
 
             headerNumCls += 1
