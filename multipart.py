@@ -49,7 +49,11 @@ for f in sys.argv :
             line = line.rstrip().lstrip()
             parts = line.split()
             towrite = ""
-            for part in parts :
+            for part in parts:
+                if part == "x":
+                    print "x "
+                    continue
+
                 #end of line
                 if (part == "0") :
                     towrite += "0"
