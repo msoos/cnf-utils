@@ -51,7 +51,7 @@ for f in sys.argv :
             towrite = ""
             for part in parts:
                 if part == "x":
-                    print "x "
+                    towrite += "x "
                     continue
 
                 #end of line
