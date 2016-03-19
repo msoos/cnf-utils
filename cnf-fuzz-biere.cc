@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <sys/times.h>
 #include <unistd.h>
 #include <string.h>
+#include <cstdlib>
 
 #define MAX 20
 static int clause[MAX + 1];
@@ -50,7 +51,7 @@ main (int argc, char ** argv)
       return 0;
     }
 
-  seed = (argc > 1) ? atoi (argv[1]) : abs ((times(0) * getpid ()) >> 1);
+  seed = (argc > 1) ? atoi (argv[1]) : std::abs ((times(0) * getpid ()) >> 1);
   printf ("c seed %d\n", seed);
   srand (seed);
   w = pick (10, 70);
