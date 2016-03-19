@@ -1122,11 +1122,11 @@ int main(int argc, char **argv)
             fprintf (stderr, "For min-variables, the greatest number of variables permitted is 30\n");
             exit(0);
         }
-        minVariables (numOfVariables);
+        minVariables ();
     }
     else
     {
-        minLiterals (numOfVariables);
+        minLiterals ();
     }
 
     printClauseArray();
