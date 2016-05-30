@@ -614,7 +614,7 @@ void setShiftPermute (int s)
 	int ss[6];
 	ss[0] = 0;
 	for (v=1;v<=5;v++)
-		ss[v] = rand()%200;
+		ss[v] = myrand()%200;
 
 
 
@@ -849,8 +849,8 @@ void randomizeArray (int numOfElements, int *array)
 
     for (i=0;i<numOfElements*numOfElements;i++)
     {
-        p1 = rand() % numOfElements;
-        p2 = rand() % numOfElements;
+        p1 = myrand() % numOfElements;
+        p2 = myrand() % numOfElements;
         temp = array[p1];
         array[p1] = array[p2];
         array[p2] = temp;
@@ -897,7 +897,7 @@ void initGlobalPermute()
     {
         globalPermute = getRandomFromOne (numOfVariables);
         for (v=1;v<=numOfVariables;v++)
-            if (rand() % 2 ==1 )
+            if (myrand() % 2 ==1 )
                 globalPermute[v] = -globalPermute[v];
     }
     else
