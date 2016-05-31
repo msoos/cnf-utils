@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     } else {
         cout << "c using time(NULL) as seed" << endl;
     }
-    mtrand.seed();
+    mtrand.seed(seed);
     numVars = mtrand.randInt(5ULL*1000ULL*1000ULL) + 1ULL*1000ULL*1000ULL;
     if (mtrand.randInt(10) == 0) {
         numVars += mtrand.randInt(8ULL*1000ULL*1000ULL);
