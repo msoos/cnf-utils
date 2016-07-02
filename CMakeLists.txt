@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 
+if(NOT (CMAKE_MAJOR_VERSION LESS 2))
+    if(POLICY CMP0048)
+        #policy for VERSION in cmake 3.0
+        cmake_policy(SET CMP0048 OLD)
+    endif()
+endif()
+
 IF(DEFINED CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel.")
 ELSE()
