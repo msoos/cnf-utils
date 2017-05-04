@@ -33,7 +33,7 @@ THE SOFTWARE.
 #include <iomanip>
 #include <string>
 #include <limits>
-#include "assert.h"
+#include <cassert.h>
 #include "solvertypesmini.h"
 
 namespace CMSat {

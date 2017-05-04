@@ -3,7 +3,7 @@
  */
 #include <cstdio>
 #include <stdint.h>
-#include "assert.h"
+#include <cassert.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <limits.h>

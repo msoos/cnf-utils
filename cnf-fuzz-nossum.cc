@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <unistd.h>
 #include "MersenneTwister.h"
 #include <vector>
-#include "assert.h"
+#include <cassert.h>
 using std::vector;
 
 class clause {
