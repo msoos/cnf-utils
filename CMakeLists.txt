@@ -82,5 +82,6 @@ add_executable(largefuzzer
     largefuzzer.cpp
 )
 
-
-target_link_libraries(sgen4 m)
+if (NOT MSVC)
+    target_link_libraries(sgen4 m)
+endif()
