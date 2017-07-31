@@ -1,10 +1,9 @@
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
 
-if(NOT (CMAKE_MAJOR_VERSION LESS 2))
-    if(POLICY CMP0048)
-        #policy for VERSION in cmake 3.0
-        cmake_policy(SET CMP0048 OLD)
-    endif()
+
+if(POLICY CMP0048)
+    #policy for VERSION in cmake 3.0
+    cmake_policy(SET CMP0048 OLD)
 endif()
 
 IF(DEFINED CMAKE_BUILD_TYPE)
@@ -14,17 +13,21 @@ ELSE()
 ENDIF()
 
 PROJECT(cnf-utils)
-#default flags
-SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -Wall -pedantic -g -std=c++0x")
-SET(CMAKE_C_FLAGS_RELWITHDEBINFO "-O3 -Wall -pedantic -g -std=c99")
 
-# debug flags
-SET(CMAKE_CXX_FLAGS_DEBUG "-Wall -O0 -g")
-SET(CMAKE_C_FLAGS_DEBUG "-Wall -O0 -g -std=c99")
+add_compile_options("$<$<CONFIG:RELWITHDEBINFO>:-O3>")
+add_compile_options("$<$<CONFIG:RELWITHDEBINFO>:-mtune=native>")
+add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-std=c++11>)
+add_compile_options($<$<COMPILE_LANGUAGE:C>:-std=c99>)
 
-# release flags
-SET(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -g0 -fno-exceptions -DNDEBUG -march=native")
-SET(CMAKE_C_FLAGS_RELEASE "-Wall -O3 -g0 -fno-exceptions -DNDEBUG -march=native -std=c99")
+
+add_compile_options("$<$<CONFIG:RELEASE>:-O3>")
+add_compile_options("$<$<CONFIG:RELEASE>:-g0>")
+add_compile_options("$<$<CONFIG:RELEASE>:-DNDEBUG>")
+add_compile_options("$<$<CONFIG:RELEASE>:-mtune=native>")
+
+add_compile_options("$<$<CONFIG:DEBUG>:-O0>")
+add_compile_options( -g -pedantic -Wall )
+
 
 # add_executable(cnf-cat
 #     cnf-cat.cc
