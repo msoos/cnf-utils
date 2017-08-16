@@ -25,7 +25,10 @@ add_compile_options("$<$<CONFIG:RELEASE>:-DNDEBUG>")
 add_compile_options("$<$<CONFIG:RELEASE>:-mtune=native>")
 
 add_compile_options("$<$<CONFIG:DEBUG>:-O0>")
-add_compile_options( -g -pedantic -Wall )
+
+if (NOT WIN32)
+    add_compile_options( -g -pedantic -Wall )
+endif()
 
 
 # add_executable(cnf-cat
