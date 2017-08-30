@@ -77,6 +77,14 @@ else()
     set(DEF_INSTALL_CMAKE_DIR CMake)
 endif()
 
+include(CheckCXXCompilerFlag)
+macro(add_cxx_flag_if_supported flagname)
+  check_cxx_compiler_flag("${flagname}" HAVE_FLAG_${flagname})
+
+  if(HAVE_FLAG_${flagname})
+    add_compile_options( ${flagname} )
+  endif()
+endmacro()
 
 if (NOT WIN32)
     add_cxx_flag_if_supported("-Wall")
