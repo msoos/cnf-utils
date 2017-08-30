@@ -16,18 +16,90 @@ ENDIF()
 
 PROJECT(cnf-utils)
 
-add_compile_options("$<$<CONFIG:RELWITHDEBINFO>:-O3>")
-add_compile_options("$<$<CONFIG:RELWITHDEBINFO>:-mtune=native>")
+#default flags
+if (NOT MSVC)
+    add_compile_options( -g)
 
-add_compile_options("$<$<CONFIG:RELEASE>:-O3>")
-add_compile_options("$<$<CONFIG:RELEASE>:-g0>")
-add_compile_options("$<$<CONFIG:RELEASE>:-DNDEBUG>")
-add_compile_options("$<$<CONFIG:RELEASE>:-mtune=native>")
+    add_compile_options("$<$<CONFIG:RELWITHDEBINFO>:-O3>")
+    add_compile_options("$<$<CONFIG:RELWITHDEBINFO>:-mtune=native>")
 
-add_compile_options("$<$<CONFIG:DEBUG>:-O0>")
+    add_compile_options("$<$<CONFIG:RELEASE>:-O3>")
+    add_compile_options("$<$<CONFIG:RELEASE>:-g0>")
+    add_compile_options("$<$<CONFIG:RELEASE>:-DNDEBUG>")
+    add_compile_options("$<$<CONFIG:RELEASE>:-mtune=native>")
+
+    add_compile_options("$<$<CONFIG:DEBUG>:-O0>")
+
+else()
+    # see https://msdn.microsoft.com/en-us/library/fwkeyyhe.aspx for details
+    # /ZI = include debug info
+    # /Wall = all warnings
+
+    add_compile_options("$<$<CONFIG:RELWITHDEBINFO>:/Ox>")
+    add_compile_options("$<$<CONFIG:RELWITHDEBINFO>:/ZI>")
+
+    add_compile_options("$<$<CONFIG:RELEASE>:/Ox>")
+    add_compile_options("$<$<CONFIG:RELEASE>:/D>")
+    add_compile_options("$<$<CONFIG:RELEASE>:/NDEBUG>")
+    add_compile_options("$<$<CONFIG:RELEASE>:/ZI>")
+
+    add_compile_options("$<$<CONFIG:DEBUG>:/Od>")
+
+    # We statically link to reduce dependencies
+    foreach(flag_var CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+        if(${flag_var} MATCHES "/MD")
+            string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+        endif(${flag_var} MATCHES "/MD")
+        if(${flag_var} MATCHES "/MDd")
+            string(REGEX REPLACE "/MDd" "/MTd" ${flag_var} "${${flag_var}}")
+        endif(${flag_var} MATCHES "/MDd")
+    endforeach(flag_var)
+
+    # buffers security check
+    add_compile_options(/GS)
+
+    # Proper warning level
+    add_compile_options(/W1)
+    # Disable STL used in DLL-boundary warning
+    add_compile_options(/wd4251)
+    add_compile_options(/D_CRT_SECURE_NO_WARNINGS)
+    add_compile_options(/fp:precise)
+
+    # exception handling. s = The exception-handling model that catches C++ exceptions only and tells the compiler to assume that functions declared as extern "C" may throw an exception.
+    # exception handling. c = If used with s (/EHsc), catches C++ exceptions only and tells the compiler to assume that functions declared as extern "C" never throw a C++ exception.
+    add_compile_options(/EHsc)
+
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /INCREMENTAL:NO")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /PDBCOMPRESS")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:1572864")
+
+    #what does this do?
+    set(DEF_INSTALL_CMAKE_DIR CMake)
+endif()
+
 
 if (NOT WIN32)
-    add_compile_options( -g -pedantic -Wall )
+    add_cxx_flag_if_supported("-Wall")
+    add_cxx_flag_if_supported("-Wextra")
+    add_cxx_flag_if_supported("-Wunused")
+    add_cxx_flag_if_supported("-pedantic")
+    add_cxx_flag_if_supported("-Wsign-compare")
+    if (NOT CMAKE_BUILD_TYPE STREQUAL "Release")
+        add_cxx_flag_if_supported("-fno-omit-frame-pointer")
+    endif()
+    add_cxx_flag_if_supported("-Wtype-limits")
+    add_cxx_flag_if_supported("-Wuninitialized")
+    add_cxx_flag_if_supported("-Wno-deprecated")
+    add_cxx_flag_if_supported("-Wstrict-aliasing")
+    add_cxx_flag_if_supported("-Wpointer-arith")
+    add_cxx_flag_if_supported("-Wheader-guard")
+    add_cxx_flag_if_supported("-Wpointer-arith")
+    add_cxx_flag_if_supported("-Wformat-nonliteral")
+    add_cxx_flag_if_supported("-Winit-self")
+    add_cxx_flag_if_supported("-Wparentheses")
+    add_cxx_flag_if_supported("-Wunreachable-code")
+    add_cxx_flag_if_supported("-ggdb3")
+    add_cxx_flag("-fPIC")
 endif()
 
 
