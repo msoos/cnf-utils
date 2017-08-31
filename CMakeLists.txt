@@ -107,7 +107,7 @@ if (NOT WIN32)
     add_cxx_flag_if_supported("-Wparentheses")
     add_cxx_flag_if_supported("-Wunreachable-code")
     add_cxx_flag_if_supported("-ggdb3")
-    add_cxx_flag("-fPIC")
+    add_compile_options("-fPIC")
 endif()
 
 
