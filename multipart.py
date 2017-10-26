@@ -2,7 +2,7 @@
 from __future__ import with_statement
 import sys, string, os
 
-print "c %s" % sys.argv
+print("c %s" % sys.argv)
 
 
 #create header
