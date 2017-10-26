@@ -28,7 +28,7 @@ for fname in sys.argv :
             headerNumCls += 1
         headerNumVars += thisnumvars
 
-print "p cnf %d %d" % (headerNumVars, headerNumCls)
+print("p cnf %d %d" % (headerNumVars, headerNumCls))
 
 #print final CNF
 ret = ""
@@ -74,7 +74,7 @@ for f in sys.argv :
                 towrite += "%d " % newLit #sys.stdout.write("%d " % newLit)
 
             #end of this line in file
-            print towrite
+            print(towrite)
 
     #next part has to be updated with incremented varaibles
     numvarsUntilNow += thisnumvars

@@ -22,7 +22,7 @@ for i in range(random.randint(min(100, numvars), numvars)):
     xorclsizes.append(thissize)
     numcls += 1 << (thissize-1)
 
-print "p cnf %d %d" % (numvars, numcls)
+print("p cnf %d %d" % (numvars, numcls))
 
 #longcls
 for i in range(numlongs):
@@ -32,14 +32,14 @@ for i in range(numlongs):
             lit = -1*lit
         sys.stdout.write("%d " % lit)
 
-    print "0"
+    print("0")
 
 #units
 for i in range(numunits):
     lit = random.randint(1, numvars)
     if random.randint(0, 1) == 1:
         lit = -1*lit
-    print "%d 0" % lit
+    print("%d 0" % lit)
 
 #xors
 for thisxorsize in xorclsizes:
@@ -81,4 +81,4 @@ for thisxorsize in xorclsizes:
                 at += 1
 
             #end of clause
-            print "0"
+            print("0")
