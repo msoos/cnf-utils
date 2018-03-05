@@ -15,7 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import random, getopt, sys, signal
+from __future__ import with_statement  # Required in 2.5
+from __future__ import print_function
+import random
+import getopt
+import sys
+import signal
 
 VAR = 0
 AND = 1
@@ -53,33 +58,33 @@ class Node:
     self.cnf_id = 0
 
 def usage():
-  print "********************************************************************************"
-  print "*              FuzzSAT " + g_version + "                                                     *"
-  print "*              Fuzzing Tool for CNF                                            *"
-  print "*              written by Robert Daniel Brummayer, 2009                        *"
-  print "********************************************************************************"
-  print ""
-  print "usage: fuzzsat [<option>...]"
-  print ""
-  print "where <option> is one of the following:"
-  print ""
-  print "  -h              print usage information and exit"
-  print "  -V              print version and exit"
-  print ""
-  print "  -t              allow tautological clauses"
-  print "  -m              allow multiple occurrences"
-  print "                  of literals in clauses"
-  print "  -s <s>          set random seed (default: random value)"
-  print ""
-  print "  -i <v>          use min <v> input variables          (default     1)"
-  print "  -I <v>          use max <v> input variables          (default   100)"
-  print "  -r <r>          use min <r> references               (default     1)"
-  print ""
-  print "  -p <p>          use min <p> % random clauses         (default     1)"
-  print "  -P <p>          use max <p> % random clauses         (default    10)"
-  print "  -l <l>          set min random clause length to <l>  (default     2)"
-  print "  -L <l>          set max random clause length to <l>  (default     6)"
-  print ""
+  print("********************************************************************************")
+  print("*              FuzzSAT " + g_version + "                                                     *")
+  print("*              Fuzzing Tool for CNF                                            *")
+  print("*              written by Robert Daniel Brummayer, 2009                        *")
+  print("********************************************************************************")
+  print("")
+  print("usage: fuzzsat [<option>...]")
+  print("")
+  print("where <option> is one of the following:")
+  print("")
+  print("  -h              print usage information and exit")
+  print("  -V              print version and exit")
+  print("")
+  print("  -t              allow tautological clauses")
+  print("  -m              allow multiple occurrences")
+  print("                  of literals in clauses")
+  print("  -s <s>          set random seed (default: random value)")
+  print("")
+  print("  -i <v>          use min <v> input variables          (default     1)")
+  print("  -I <v>          use max <v> input variables          (default   100)")
+  print("  -r <r>          use min <r> references               (default     1)")
+  print("")
+  print("  -p <p>          use min <p> % random clauses         (default     1)")
+  print("  -P <p>          use max <p> % random clauses         (default    10)")
+  print("  -l <l>          set min random clause length to <l>  (default     2)")
+  print("  -L <l>          set max random clause length to <l>  (default     6)")
+  print("")
 
 def sighandler(signume, frame):
   sys.exit(0)
@@ -91,8 +96,8 @@ signal.signal (signal.SIGHUP, sighandler)
 
 try:
   opts, args = getopt.getopt(sys.argv[1:], "hVtmi:I:r:p:P:l:L:s:")
-except getopt.GetoptError, err:
-  print str(err)
+except getopt.GetoptError as err:
+  print(str(err))
   usage()
   sys.exit(1)
 
@@ -101,7 +106,7 @@ for o, a in opts:
     usage()
     sys.exit(0)
   if o in ("-V"):
-    print g_version
+    print(g_version)
     sys.exit(0)
   if o in ("-t"):
     g_taut = True
@@ -110,55 +115,55 @@ for o, a in opts:
   elif o in ("-i"):
     g_min_num_vars = int(a)
     if g_min_num_vars < 1:
-      print "minimum number of variables must not be < 1"
+      print("minimum number of variables must not be < 1")
       sys.exit(1)
   elif o in ("-r"):
     g_min_refs = int(a)
     if g_min_refs < 1:
-      print "minimum number of references must not be < 1"
+      print("minimum number of references must not be < 1")
       sys.exit(1)
   elif o in ("-p"):
     g_min_rclauses_perc = int(a)
     if g_min_rclauses_perc < 0:
-      print "minimum percentage of random clauses must not be < 0"
+      print("minimum percentage of random clauses must not be < 0")
       sys.exit(1)
     if g_min_rclauses_perc > 100:
-      print "minimum percentage of random clauses must not be > 100"
+      print("minimum percentage of random clauses must not be > 100")
       sys.exit(1)
   elif o in ("-l"):
     g_min_rclause_len = int(a)
     if g_min_rclause_len < 1:
-      print "minimum random clause length must not be < 1"
+      print("minimum random clause length must not be < 1")
       sys.exit(1)
   elif o in ("-I"):
     g_max_num_vars = int(a)
     if g_max_num_vars < 1:
-      print "maximum number of variables must not be < 1"
+      print("maximum number of variables must not be < 1")
       sys.exit(1)
   elif o in ("-P"):
     g_max_rclauses_perc = int(a)
     if g_max_rclauses_perc < 0:
-      print "maximum percentage of random clauses must not be < 0"
+      print("maximum percentage of random clauses must not be < 0")
       sys.exit(1)
     if g_max_rclauses_perc > 100:
-      print "maximum percentage of random clauses must not be > 100"
+      print("maximum percentage of random clauses must not be > 100")
       sys.exit(1)
   elif o in ("-L"):
     g_max_rclause_len = int(a)
     if g_max_rclause_len < 1:
-      print "maximum random clause length must not be < 1"
+      print("maximum random clause length must not be < 1")
       sys.exit(1)
   elif o in ("-s"):
     random.seed(int(a))
 
 if g_min_num_vars > g_max_num_vars:
-  print "minimum number of variables must not be > maximum"
+  print("minimum number of variables must not be > maximum")
   sys.exit(1)
 if g_min_rclauses_perc > g_max_rclauses_perc:
-  print "minimum percentage of random clauses must not be > maximum"
+  print("minimum percentage of random clauses must not be > maximum")
   sys.exit(1)
 if g_min_rclause_len > g_max_rclause_len:
-  print "minimum random clause length must not be > maximum"
+  print("minimum random clause length must not be > maximum")
   sys.exit(1)
 
 g_num_vars = random.randint (g_min_num_vars, g_max_num_vars);
@@ -176,15 +181,15 @@ while len(g_unfinished1) > 0:
   neg1 = random.randint (0, 1) == 1
 
   if n0.refs >= g_min_refs - 1:
-    if g_unfinished1.has_key(str(id0)):
+    if str(id0) in g_unfinished1:
       del g_unfinished1[str(id0)]
-  if g_unfinished2.has_key (str(id0)):
+  if str(id0) in g_unfinished2:
     del g_unfinished2[str(id0)]
 
   if n1.refs >= g_min_refs - 1:
-    if g_unfinished1.has_key(str(id1)):
+    if str(id1) in g_unfinished1:
       del g_unfinished1[str(id1)]
-  if g_unfinished2.has_key (str(id1)):
+  if str(id1) in g_unfinished2:
     del g_unfinished2[str(id1)]
 
   n0.refs += 1
@@ -194,7 +199,7 @@ while len(g_unfinished1) > 0:
 
 # combine non-referenced nodes to one boolean root
 while len(g_unfinished2.keys()) > 1:
-  keys = g_unfinished2.keys()
+  keys = list(g_unfinished2.keys())
   len_keys = len(keys)
 
   op = random.randint (AND, IFF)
@@ -221,7 +226,7 @@ stack = list()
 cnf_id = 1
 num_clauses = 0
 cnf = ""
-root = g_unfinished2.values()[0]
+root = list(g_unfinished2.values())[0]
 stack.append (root)
 while len(stack) > 0:
   cur = stack.pop()
@@ -387,8 +392,8 @@ for i in range(0, num_rclauses):
   cnf += "0\n"
 num_clauses += num_rclauses
 
-print "c generated by FuzzSAT"
-print "p cnf " + str(cnf_id - 1) + " " + str(num_clauses + 1)
+print("c generated by FuzzSAT")
+print("p cnf " + str(cnf_id - 1) + " " + str(num_clauses + 1))
 sys.stdout.write (cnf)
 assert (root.cnf_id != 0)
-print str(root.cnf_id) + " 0"
+print(str(root.cnf_id) + " 0")
