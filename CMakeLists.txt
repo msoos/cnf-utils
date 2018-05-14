@@ -25,7 +25,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 if(POLICY CMP0048)
     #policy for VERSION in cmake 3.0
-    cmake_policy(SET CMP0048 OLD)
+    cmake_policy(SET CMP0048 NEW)
 endif()
 
 IF(DEFINED CMAKE_BUILD_TYPE)
