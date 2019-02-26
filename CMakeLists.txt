@@ -179,6 +179,10 @@ add_executable(cnf-fuzz-biere
     cnf-fuzz-biere.cc
 )
 
+add_executable(makewff
+    makewff.c
+)
+
 add_executable(sgen4
     sgen4.c
 )
