@@ -32,8 +32,6 @@ THE SOFTWARE.
 #include <iostream>
 #include <vector>
 
-namespace CMSat {
-
 typedef uint32_t Var;
 static const Var var_Undef(0xffffffffU >> 3);
 
@@ -171,8 +169,6 @@ inline std::ostream& operator<<(std::ostream& cout, const lbool val)
     if (val == l_False) cout << "l_False";
     if (val == l_Undef) cout << "l_Undef";
     return cout;
-}
-
 }
 
 #endif //__SOLVERTYPESMINI_H__

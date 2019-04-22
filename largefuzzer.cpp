@@ -8,7 +8,6 @@
 using std::endl;
 using std::cout;
 using std::vector;
-using CMSat::Lit;
 
 static MTRand mtrand;
 static uint64_t numVars;
