@@ -29,16 +29,17 @@ parser.add_option("--seed", "-s", metavar="SEED", dest="seed", type=int,
 if options.seed is not None:
     random.seed(options.seed)
 
-numvars = random.randint(300, 1000)
+num_matrixes = random.randint(3, 5)
+numvars = random.randint(500, 1000)
 numunits = random.randint(0, 25)
-numlongs = random.randint(100, numvars)
+numlongs = random.randint(200, 300 )
 numcls = numunits + numlongs
 
 xorclsizes = []
-for i in range(random.randint(100, numvars)):
-    thissize = random.randint(3, 7)
+for i in range(random.randint(50, max(50, int(numvars/2) ))):
+    thissize = random.randint(4, 7)
     xorclsizes.append(thissize)
-    numcls += 1 << (thissize - 1)
+    numcls += (1 << (thissize - 1))*num_matrixes
 
 print("p cnf %d %d" % (numvars, numcls))
 
@@ -60,43 +61,56 @@ for i in range(numunits):
     print("%d 0" % lit)
 
 # xors
-for thisxorsize in xorclsizes:
-    varlist = []
+per_matrix_vars = int(numvars/num_matrixes)
+def add_xors(matrix_num) :
+    vars_from = 1+per_matrix_vars*matrix_num
+    vars_to = per_matrix_vars*matrix_num+per_matrix_vars
+    # print(matrix_num, " ", vars_from, " ", vars_to, " ", per_matrix_vars, " numvars: " , numvars)
+    assert vars_from < vars_to
+    assert vars_to <= numvars
 
-    # create varlist
-    for a in range(thisxorsize):
-        var = random.randint(1, numvars)
-        while var in varlist:
-            var = random.randint(1, numvars)
+    for thisxorsize in xorclsizes:
+        varlist = []
 
-        # flip randomly
-        if random.randint(0, 1) == 1:
-            var = -1 * var
+        # create varlist
+        for a in range(thisxorsize):
+            var = random.randint(vars_from, vars_to)
+            while var in varlist:
+                var = random.randint(vars_from, vars_to)
 
-        varlist.append(var)
+            # flip randomly
+            if random.randint(0, 1) == 1:
+                var = -1 * var
 
-    # polarity of the XOR
-    polarity = random.randint(0, 1)
+            varlist.append(var)
 
-    for i2 in range(1 << len(varlist)):
-        # number of inversions is right, use it
-        if bin(i2).count("1") % 2 == polarity:
-            at = 0
-            for var in varlist:
-                lit = var
+        # polarity of the XOR
+        polarity = random.randint(0, 1)
 
-                # calculate inversion
-                invert = (i2 >> at) & 1 == 1
-                # if polarity :
-                #    invert = not invert
+        for i2 in range(1 << len(varlist)):
+            # number of inversions is right, use it
+            if bin(i2).count("1") % 2 == polarity:
+                at = 0
+                for var in varlist:
+                    lit = var
 
-                # create lit
-                if invert:
-                    lit = -1 * var
+                    # calculate inversion
+                    invert = (i2 >> at) & 1 == 1
+                    # if polarity :
+                    #    invert = not invert
 
-                # print lit
-                sys.stdout.write("%d " % lit)
-                at += 1
+                    # create lit
+                    if invert:
+                        lit = -1 * var
 
-            # end of clause
-            print("0")
+                    # print lit
+                    sys.stdout.write("%d " % lit)
+                    at += 1
+
+                # end of clause
+                print("0")
+
+for m in range(num_matrixes):
+    add_xors(m)
+
+
