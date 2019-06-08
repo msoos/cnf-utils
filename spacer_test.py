@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # Copyright (C) 2019 Connor Olding
+# Copyright (C) 2019 Mate Soos, minor modifications to randomize
 
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -14,10 +15,7 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-# the cnf output by this script causes an assertion failure
-# in cryptominisat5 (commit 32cfd2d) when USE_GAUSS=ON.
-
-# the problem being solved is
+# the original problem being solved was
 # ((((x + ?) | ?) ... | ?) + ?) & 0x11111111 = expand4(x)
 # where x is an n-bit variable (where n is the python `bit` variable)
 # and the question marks are free 32-bit variables.
@@ -26,8 +24,17 @@
 # in place of OR gates, but the form used here
 # is more interesting to solve, in some sense.
 
-# this code wasn't exactly intended for the public eye...
-# please excuse my crappy bit-blasting :)
+# this problem has been randomized to fuzz the system
+
+import random
+import optparse
+
+parser = optparse.OptionParser()
+parser.add_option("--seed", metavar="SEED", dest="seed", type=int,
+                  help="seed value")
+(options, args) = parser.parse_args()
+if options.seed is not None:
+    random.seed(options.seed)
 
 def expand4(x):
     return (
@@ -171,9 +178,10 @@ class Problem:
         for cls in self.clauses:
             print(*cls, 0, file=file)
 
-bits = 6
+bits = random.randint(3,7)
 depth = bits * 2 - 3
-bigbits = 32
+depth += random.randint(0,10)
+bigbits = random.randint(4,10)
 
 p = Problem()
 
@@ -183,7 +191,7 @@ vars = [tuple([p.var(f'var{d}_{i}') for i in range(bigbits)])
 for b in range(1 << bits):
     x = b
     y = expand4(b)
-    mask = 0x11111111
+    mask = random.randint(0, 2**32-1)
 
     inp = [bool(x & 1 << i) for i in range(bigbits)]
 
@@ -197,6 +205,13 @@ for b in range(1 << bits):
     for i in range(bigbits):
         if mask & 1 << i:
             p.assert_eq(out[i], bool(y & 1 << i))
+
+for _ in range(random.randint(0,80)):
+    p.add_clause(
+        random.choice([-1, 1])*random.randint(1, p.i),
+        random.choice([-1, 1])*random.randint(1, p.i),
+        random.choice([-1, 1])*random.randint(1, p.i),
+        )
 
 #p.dimacs(verbosity=2)
 p.dimacs()
