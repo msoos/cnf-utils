@@ -157,11 +157,11 @@ inline void print_stats_line(
 }
 
 template<class T, class T2> void print_stats_line(
-    string left
+    const string& left
     , T value
-    , string extra1
+    , const string& extra1
     , T2 value2
-    , string extra2
+    , const string& extra2
 ) {
     cout
     << std::fixed << std::left << std::setw(27) << left
@@ -174,9 +174,9 @@ template<class T, class T2> void print_stats_line(
 }
 
 template<class T> void print_stats_line(
-    string left
+    const string& left
     , T value
-    , string extra = ""
+    , const string& extra = ""
 ) {
     cout
     << std::fixed << std::left << std::setw(27) << left
