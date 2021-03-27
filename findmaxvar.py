@@ -25,11 +25,14 @@ for line in f :
     if len(line) == 0:
         continue
 
+    if line[0] == "c":
+        continue
+
+    if line[0] == "x":
+        line = line[1:]
+
     for v in line.split() :
         v = v.lstrip().rstrip()
-        if v == "d" :
-            continue
-
         maxvar = max(maxvar, abs(int(v)))
 
-print "maxvar: ", maxvar
+print("maxvar: ", maxvar)

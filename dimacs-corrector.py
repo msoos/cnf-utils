@@ -18,7 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import commands
 import os
 import fnmatch
 import gzip
@@ -44,7 +43,7 @@ def check_regular_clause(line, maxvar):
     return maxvar
 
 def doit(fname):
-    print "c Examining CNF file %s" %(fname)
+    print("c Examining CNF file %s" %(fname))
 
     if fname[-3:] == ".gz" :
         f = gzip.open(fname, "r")
@@ -63,7 +62,7 @@ def doit(fname):
             if (line[0] != 'x') :
                 maxvar = check_regular_clause(line, maxvar)
             else :
-                print "OOOOPS! -- xor-clause"
+                print("OOOOPS! -- xor-clause")
                 exit(-1);
                 #self.check_xor_clause(line)
             clauses += 1
@@ -77,7 +76,7 @@ def doit(fname):
         f = open(fname, "r")
 
     #write to output
-    print "p cnf %d %d" % (maxvar, clauses)
+    print("p cnf %d %d" % (maxvar, clauses))
     for line in f :
         #skip header
         line = line.rstrip().lstrip()
@@ -99,7 +98,7 @@ def doit(fname):
 
             #regular variable
             sys.stdout.write("%d " % lit)
-        print "0"
+        print("0")
 
     #finish up
     f.close()
