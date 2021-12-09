@@ -26,12 +26,14 @@ import optparse
 parser = optparse.OptionParser()
 parser.add_option("--seed", "-s", metavar="SEED", dest="seed", type=int,
                   help="random seed value")
+parser.add_option("--varsmin", "-s", metavar="VARSMIN", dest="varsmin", type=int, default=40
+                  help="Minimum number of variables")
 (options, args) = parser.parse_args()
 if options.seed is not None:
     random.seed(options.seed)
 
 num_matrixes = random.randint(1, 1)
-numvars = random.randint(40, 60)
+numvars = random.randint(options.varsmin, options.varsmin+20)
 numunits = random.randint(0, 10)
 numlongs = random.randint(5, 10 )
 numcls = numunits + numlongs
