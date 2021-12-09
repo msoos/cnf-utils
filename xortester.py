@@ -26,7 +26,7 @@ import optparse
 parser = optparse.OptionParser()
 parser.add_option("--seed", "-s", metavar="SEED", dest="seed", type=int,
                   help="random seed value")
-parser.add_option("--varsmin", "-s", metavar="VARSMIN", dest="varsmin", type=int, default=40,
+parser.add_option("--varsmin", metavar="VARSMIN", dest="varsmin", type=int, default=40,
                   help="Minimum number of variables")
 (options, args) = parser.parse_args()
 if options.seed is not None:
