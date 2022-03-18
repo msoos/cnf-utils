@@ -35,12 +35,12 @@ if options.seed is not None:
 num_matrixes = random.randint(1, 1)
 numvars = random.randint(options.varsmin, options.varsmin+20)
 numunits = random.randint(0, 10)
-numlongs = random.randint(5, 10 )
+numlongs = random.randint(100, 900 )
 numcls = numunits + numlongs
 
 xorclsizes = []
-for i in range(random.randint(int(numvars*1.9), max(int(numvars*1.9), int(numvars*1.9)+20 ))):
-    thissize = random.randint(4, 7)
+for i in range(random.randint(int(numvars*1.1), max(int(numvars*1.9), int(numvars*1.9)+20 ))):
+    thissize = random.randint(6, 9)
     xorclsizes.append(thissize)
     numcls += (1 << (thissize - 1))*num_matrixes
 
