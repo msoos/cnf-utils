@@ -39,7 +39,7 @@ numlongs = random.randint(100, 900 )
 numcls = numunits + numlongs
 
 xorclsizes = []
-for i in range(random.randint(int(numvars*1.1), max(int(numvars*1.9), int(numvars*1.9)+20 ))):
+for i in range(random.randint(int(numvars*0.8), max(int(numvars*1.4), int(numvars*1.3)+20 ))):
     thissize = random.randint(6, 9)
     xorclsizes.append(thissize)
     numcls += (1 << (thissize - 1))*num_matrixes
