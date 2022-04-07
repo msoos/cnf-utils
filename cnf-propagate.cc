@@ -22,6 +22,7 @@ extern "C" {
 #include <algorithm>
 #include <map>
 #include <set>
+#include <iostream>
 
 #include "cnf.hh"
 
