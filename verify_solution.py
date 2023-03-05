@@ -39,7 +39,7 @@ def parse_solution_from_output(output_lines):
     # parse in solution
     for line in output_lines:
         # skip comment
-        if (re.match('^c ', line)):
+        if (re.match('^c', line)):
             continue
 
         # SAT/UNSAT
@@ -164,7 +164,7 @@ def test_found_solution(solution, fname):
     f.close()
     print("Verified %d original xor&regular clauses" % clauses)
 
-if __name__ == "main":
+if __name__ == "__main__":
     if len(sys.argv) != 3:
         print("ERROR you must give CNF and SOLUTION files as arguments");
         exit(-1)
@@ -173,7 +173,7 @@ if __name__ == "main":
     solution_fname = sys.argv[2];
 
     with open(solution_fname, "r") as sol_f:
-        solution_txt = sol_f.read()
+        solution_txt = sol_f.read().split("\n")
 
     sat, solution = parse_solution_from_output(solution_txt)
     if not sat:
@@ -181,5 +181,5 @@ if __name__ == "main":
         exit(0);
 
     test_found_solution(solution, cnf_fname)
-    print("Solution OK (if it's SATISFIABLE)");
+    print("Solution OK");
 
