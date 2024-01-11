@@ -26,8 +26,11 @@ print("p cnf %d %d" % (numvars, numcls))
 
 #longcls
 for i in range(numlongs):
+    vars = set()
     for i2 in range(random.randint(2, 5)):
         lit = random.randint(1, numvars)
+        if lit in vars: continue
+        vars.add(lit)
         if random.randint(0, 1) == 1:
             lit = -1*lit
         sys.stdout.write("%d " % lit)
