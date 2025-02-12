@@ -28,24 +28,36 @@ print("c %s" % sys.argv)
 headerNumVars = 0
 headerNumCls = 0
 at = 0
+
+# count number of variables and clauses
 for fname in sys.argv:
     at += 1
     if at == 1:
         continue
 
-    thisnumvars = 0
+    thismv = 0
     with open(fname, "r") as ins:
         for line in ins:
+            line = line.strip()
             if line[0] == 'p' or line[0] == 'c':
                 continue
 
-            for part in line.split():
-                if part.strip() == 'x':
-                    continue
-                thisnumvars = max(thisnumvars, abs(int(part)))
-
             headerNumCls += 1
-        headerNumVars += thisnumvars
+            if line[0] == 'b':
+                line = [int(e.strip()) for e in line.split()]
+                assert 0 in line
+                ind = line.index(0)
+                lhs = line[:ind]
+                thismv = max([thismv]+lhs)
+                if len(line) > ind+2:
+                    output = line[ind+2]
+                    thismv = max(thismv, output)
+            else:
+                for lit in line.split():
+                    if lit.strip() == 'x':
+                        continue
+                    thismv = max(thismv, abs(int(lit)))
+        headerNumVars += thismv
 
 print("p cnf %d %d" % (headerNumVars, headerNumCls))
 
@@ -58,41 +70,45 @@ for f in sys.argv:
     if at == 1:
         continue
 
-    thisnumvars = 0
+    thismv = 0
     with open(f, "r") as ins:
         for line in ins:
+            line = line.strip()
+
             # ignore header and comments
             if line[0] == 'p' or line[0] == 'c':
                 continue
 
-            line = line.rstrip().lstrip()
-            parts = line.split()
-            towrite = ""
-            for part in parts:
-                if part == "x":
-                    towrite += "x "
-                    continue
+            if line[0] == 'b':
+                assert False, "Not implemented"
+            else:
+                lits = line.strip().split()
+                towrite = ""
+                for lit in lits:
+                    if lit == "x":
+                        towrite += "x "
+                        continue
 
-                # end of line
-                if (part == "0"):
-                    towrite += "0"
-                    break
+                    # end of line
+                    if lit == "0":
+                        towrite += "0"
+                        break
 
-                # update number of variables in this part
-                thisnumvars = max(thisnumvars, abs(int(part)))
+                    # update number of variables in this part
+                    thismv = max(thismv, abs(int(lit)))
 
-                # increment variable number if need be
-                newLit = abs(int(part)) + numvarsUntilNow
+                    # increment variable number if need be
+                    newLit = abs(int(lit)) + numvarsUntilNow
 
-                # invert if needed
-                if (int(part) < 0):
-                    newLit = -1*newLit
+                    # invert if needed
+                    if (int(lit) < 0):
+                        newLit = -1*newLit
 
-                # write updated literal
-                towrite += "%d " % newLit
+                    # write updated literal
+                    towrite += "%d " % newLit
 
             # end of this line in file
             print(towrite)
 
     # next part has to be updated with incremented varaibles
-    numvarsUntilNow += thisnumvars
+    numvarsUntilNow += thismv
