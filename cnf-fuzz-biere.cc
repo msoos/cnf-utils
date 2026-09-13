@@ -21,6 +21,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <time.h>
 #include <string.h>
 #include <cstdlib>
+#include <random>
+#include <vector>
+#include <numeric>
+#include <algorithm>
 
 #define MAX 20
 static int clause[MAX + 1];
@@ -89,7 +93,11 @@ main (int argc, char ** argv)
   mark = (char*)calloc (m + 1, 1);
   for (i = 0; i < nlayers; i++)
     n += clauses[i];
-  printf ("p cnf %d %d\n", m, n);
+  // own RNG: seeds keep their old clauses
+  std::mt19937 long_rng ((unsigned) seed ^ 0x9e3779b9u);
+  const int nlong = (long_rng () % 10 == 0) ? 1 + (int) (long_rng () % 3) : 0;
+  printf ("c very long clauses %d\n", nlong);
+  printf ("p cnf %d %d\n", m, n + nlong);
   for (i = 0; i < nlayers; i++)
     {
       for (j = 0; j < clauses[i]; j++)
@@ -127,6 +135,17 @@ main (int argc, char ** argv)
 	  for (k = 0; k < l; k++)
 	    mark[abs (clause[k])] = 0;
 	}
+    }
+  std::vector<int> vars (m);
+  std::iota (vars.begin (), vars.end (), 1);
+  for (i = 0; i < nlong; i++)
+    {
+      const int minlen = std::min (m, 100);
+      const int len = minlen + (int) (long_rng () % (m - minlen + 1));
+      std::shuffle (vars.begin (), vars.end (), long_rng);
+      for (k = 0; k < len; k++)
+	printf ("%d ", (long_rng () & 1) ? vars[k] : -vars[k]);
+      printf ("0\n");
     }
   free (mark);
   free (clauses);

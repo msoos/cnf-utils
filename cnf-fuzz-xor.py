@@ -22,7 +22,16 @@ for i in range(random.randint(min(100, numvars), numvars)):
     xorclsizes.append(thissize)
     numcls += 1 << (thissize-1)
 
+# own RNG: seeds keep their old clauses
+long_rnd = random.Random("longcls%s" % options.seed) if options.seed is not None else random.Random()
+numverylong = long_rnd.randint(1, 3) if long_rnd.randint(0, 9) == 0 else 0
+numcls += numverylong
+
 print("p cnf %d %d" % (numvars, numcls))
+
+for i in range(numverylong):
+    vs = long_rnd.sample(range(1, numvars+1), long_rnd.randint(min(numvars, 100), numvars))
+    print(" ".join(str(v if long_rnd.randint(0, 1) else -v) for v in vs) + " 0")
 
 #longcls
 for i in range(numlongs):
